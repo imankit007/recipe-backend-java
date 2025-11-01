@@ -1,0 +1,9 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation project(':recipe-core')
+    implementation project(':recipe-data')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}

@@ -1,1 +1,5 @@
-rootProject.name = 'Recipe'
+rootProject.name = 'recipe-backend-java'
+
+include 'recipe-core'
+include 'recipe-data'
+include 'recipe-service'
