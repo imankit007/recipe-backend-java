@@ -12,10 +12,11 @@ repositories {
 
 dependencies {
     implementation 'io.grpc:grpc-services'
-    implementation 'org.springframework.grpc:spring-grpc-spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.grpc:spring-grpc-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'io.grpc:grpc-protobuf'
+    implementation 'io.grpc:grpc-stub'
+    implementation 'io.grpc:grpc-netty-shaded'
 
 }
 ext {

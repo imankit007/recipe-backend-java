@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.recipe'
+version = '0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springGrpcVersion', "0.12.0")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.grpc:spring-grpc-dependencies:${springGrpcVersion}"
+    }
+}
+
+dependencies {
+    implementation project(':recipe-grpc')
+    implementation "org.springframework.grpc:spring-grpc-spring-boot-starter"
+    implementation 'io.grpc:grpc-netty-shaded'
+    modules {
+        module("io.grpc:grpc-netty") {
+            replacedBy("io.grpc:grpc-netty-shaded", "Use Netty shaded instead of regular Netty")
+        }
+    }
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+}
+
+test {
+    useJUnitPlatform()
+}

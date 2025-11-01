@@ -5,6 +5,7 @@ import com.recipe.grpc.api.recipe.v1.ListRecipesResponse;
 import com.recipe.grpc.api.recipe.v1.Recipe;
 import com.recipe.grpc.api.recipe.v1.RecipeServiceGrpc;
 import io.grpc.stub.StreamObserver;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,23 @@ public class RecipeServiceGrpcImpl extends RecipeServiceGrpc.RecipeServiceImplBa
 
     // In-memory store: id -> Recipe
     private final Map<String, Recipe> store = new ConcurrentHashMap<>();
+
+    @PostConstruct
+    public void initData() {
+        Recipe recipe1 = Recipe.newBuilder()
+                .setId("1")
+                .setTitle("Spaghetti Bolognese")
+                .build();
+        store.put(recipe1.getId(), recipe1);
+
+        Recipe recipe2 = Recipe.newBuilder()
+                .setId("2")
+                .setTitle("Chicken Curry")
+                .build();
+        store.put(recipe2.getId(), recipe2);
+
+        log.info("Initialized sample recipes.");
+    }
 
 //    @Override
 //    public void getRecipe(GetRecipeRequest request, StreamObserver<Recipe> responseObserver) {

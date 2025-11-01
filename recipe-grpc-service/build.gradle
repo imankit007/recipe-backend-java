@@ -20,13 +20,9 @@ dependencies {
     implementation project(':recipe-core')
     implementation project(':recipe-data')
     implementation project(':recipe-grpc')
-
-    // Spring web (optional) — keep if you still want HTTP endpoints
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-
-    // Spring gRPC starter to wire up gRPC server support
-    implementation 'org.springframework.grpc:spring-grpc-spring-boot-starter'
-
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation "io.grpc:grpc-protobuf"
+    implementation "io.grpc:grpc-stub"
     // gRPC transport (Netty shaded to avoid dependency conflicts)
     implementation 'io.grpc:grpc-netty-shaded'
 }

@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: recipe-service
+  grpc:
+    server:
+      enable: false
+
