@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option java_package = "com.recipe.grpc.api.recipe.v1";
+option java_multiple_files = true;
+option java_outer_classname = "RecipeProto";
+
+// A basic Recipe message
+message Recipe {
+  string id = 1;
+  string title = 2;
+}
+
+message GetRecipeRequest {
+  string id = 1;
+}
+
+message CreateRecipeRequest {
+  Recipe recipe = 1;
+}
+
+message UpdateRecipeRequest {
+  Recipe recipe = 1;
+}
+
+message DeleteRecipeRequest {
+  string id = 1;
+}
+
+message ListRecipesRequest {}
+
+message ListRecipesResponse {
+  repeated Recipe recipes = 1;
+}
+
+// Service definition for basic CRUD operations
+service RecipeService {
+  rpc ListRecipes(ListRecipesRequest) returns (ListRecipesResponse);
+}
+
