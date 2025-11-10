@@ -1,0 +1,44 @@
+plugins {
+    id 'com.netflix.dgs.codegen' version '8.1.1'
+}
+
+description = 'User Service for Recipe Application'
+
+
+repositories {
+    mavenCentral()
+}
+
+
+ext{
+    set('netflixDgsVersion', "10.4.0")
+}
+
+dependencies {
+
+    implementation project(':recipe-core')
+    implementation(platform('com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:3.10.2'))
+    // GraphQl dependencies
+    implementation 'com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter'
+    //Test dependencies
+//    testImplementation platform('org.junit:junit-bom:5.10.0')
+//    testImplementation 'org.junit.jupiter:junit-jupiter'
+//    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:${netflixDgsVersion}"
+    }
+}
+
+generateJava {
+    schemaPaths = ["${projectDir}/src/main/resources/graphql-client"]
+    packageName = 'com.recipe.user.codegen'
+    generateClient = true
+}
+
+
+test {
+//    useJUnitPlatform()
+}

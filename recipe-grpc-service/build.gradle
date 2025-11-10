@@ -20,7 +20,7 @@ dependencies {
     implementation project(':recipe-core')
     implementation project(':recipe-data')
     implementation project(':recipe-grpc')
-    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation("org.springframework.boot:spring-boot-starter:3.3.4")
     implementation "io.grpc:grpc-protobuf"
     implementation "io.grpc:grpc-stub"
     // gRPC transport (Netty shaded to avoid dependency conflicts)
