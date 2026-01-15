@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class BaseDo {
+public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,11 +20,11 @@ public abstract class BaseDo {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     @Version
     @Column(name = "version")
@@ -31,22 +33,23 @@ public abstract class BaseDo {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
-    @Column(name = "created_by", length = 50)
-    private String createdBy;
-
-    @Column(name = "updated_by", length = 50)
-    private String updatedBy;
+//    @Column(name = "created_by", length = 50)
+//    private String createdBy;
+//
+//    @Column(name = "updated_by", length = 50)
+//    private String updatedBy;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        Instant now = Instant.now();
+        this.createdAt = now;
+        this.updatedAt = now;
         isActive = true;
         version = 0L;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = Instant.now();
     }
 }

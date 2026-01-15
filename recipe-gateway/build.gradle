@@ -10,12 +10,14 @@ dependencyManagement {
 
 dependencies {
     implementation project(":recipe-grpc")
-    implementation "org.springframework.grpc:spring-grpc-spring-boot-starter:0.12.0"
+    implementation "org.springframework.grpc:spring-grpc-spring-boot-starter"
+
     modules {
         module("io.grpc:grpc-netty") {
             replacedBy("io.grpc:grpc-netty-shaded", "Use Netty shaded instead of regular Netty")
         }
     }
+    implementation("org.springframework.boot:spring-boot-starter-web")
 
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0"
 }

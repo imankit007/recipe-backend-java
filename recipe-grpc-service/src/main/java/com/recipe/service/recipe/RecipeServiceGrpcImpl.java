@@ -1,12 +1,15 @@
 package com.recipe.service.recipe;
 
+import com.recipe.data.jdbc.repository.RecipeRepository;
 import com.recipe.grpc.api.recipe.v1.ListRecipesRequest;
 import com.recipe.grpc.api.recipe.v1.ListRecipesResponse;
 import com.recipe.grpc.api.recipe.v1.Recipe;
 import com.recipe.grpc.api.recipe.v1.RecipeServiceGrpc;
 import io.grpc.stub.StreamObserver;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -20,21 +23,17 @@ public class RecipeServiceGrpcImpl extends RecipeServiceGrpc.RecipeServiceImplBa
     // In-memory store: id -> Recipe
     private final Map<String, Recipe> store = new ConcurrentHashMap<>();
 
+    @Autowired
+    private RecipeRepository recipeRepository;
+
+
     @PostConstruct
     public void initData() {
-        Recipe recipe1 = Recipe.newBuilder()
-                .setId("1")
-                .setTitle("Spaghetti Bolognese")
-                .build();
-        store.put(recipe1.getId(), recipe1);
 
-        Recipe recipe2 = Recipe.newBuilder()
-                .setId("2")
-                .setTitle("Chicken Curry")
-                .build();
-        store.put(recipe2.getId(), recipe2);
+        com.recipe.data.jdbc.model.Recipe recipe1 = new com.recipe.data.jdbc.model.Recipe();
+        recipe1.setTitle("Spaghetti Bolognese");
+        recipeRepository.save(recipe1);
 
-        log.info("Initialized sample recipes.");
     }
 
 //    @Override
@@ -106,8 +105,15 @@ public class RecipeServiceGrpcImpl extends RecipeServiceGrpc.RecipeServiceImplBa
 //    }
 
     @Override
+    @Transactional
     public void listRecipes(ListRecipesRequest request, StreamObserver<ListRecipesResponse> responseObserver) {
-        Collection<Recipe> recipes = store.values();
+
+        Collection<Recipe> recipes = recipeRepository.findAll().stream().map(
+                recipe -> Recipe.newBuilder()
+                        .setId(recipe.getId().toString())
+                        .setTitle(recipe.getTitle())
+                        .build()
+        ).toList();
         ListRecipesResponse response = ListRecipesResponse.newBuilder()
                 .addAllRecipes(recipes)
                 .build();
