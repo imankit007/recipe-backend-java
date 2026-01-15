@@ -1,4 +1,4 @@
-package com.recipe.service.recipe;
+package com.recipe.grpc;
 
 import com.recipe.data.jdbc.repository.RecipeRepository;
 import com.recipe.grpc.api.recipe.v1.ListRecipesRequest;
@@ -10,15 +10,16 @@ import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.grpc.server.service.GrpcService;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
+@GrpcService
 @Slf4j
 public class RecipeServiceGrpcImpl extends RecipeServiceGrpc.RecipeServiceImplBase {
+
 
     // In-memory store: id -> Recipe
     private final Map<String, Recipe> store = new ConcurrentHashMap<>();

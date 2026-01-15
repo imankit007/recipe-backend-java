@@ -1,9 +1,9 @@
 spring:
   application:
-    name: recipe-service
+    name: recipe-api-grpc
   grpc:
     server:
-      enable: false
+      port: 50051
 
   datasource:
     url: jdbc:postgresql://localhost:5432/recipe
