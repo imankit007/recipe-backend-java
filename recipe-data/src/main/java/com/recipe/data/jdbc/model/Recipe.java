@@ -2,10 +2,13 @@ package com.recipe.data.jdbc.model;
 
 
 import com.recipe.core.data.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.recipe.core.enums.DifficultyLevel;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -13,21 +16,33 @@ import lombok.EqualsAndHashCode;
 @Data()
 public class Recipe extends BaseEntity {
 
+    @Column(name = "TITLE", nullable = false)
     private String title;
 
+    @Column(name = "DESCRIPTION", length = 2000)
     private String description;
 
+    @Column(name = "PREP_TIME_MINUTES")
     private Integer prepTimeMinutes;
 
+    @Column(name = "COOK_TIME_MINUTES")
     private Integer cookTimeMinutes;
 
+    @Column(name = "SERVINGS")
     private Integer servings;
 
-    //TODO: difficulty level
+    @Enumerated(EnumType.STRING)
+    @Column(name = "DIFFICULTY_LEVEL", nullable = false)
+    private DifficultyLevel difficultyLevel;
 
-    //TODO: recipe steps
-
-    //TODO
+    @OneToMany(
+            mappedBy = "recipe",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    @OrderBy("stepNumber ASC")
+    private List<RecipeStep> steps = new ArrayList<>();
 
 
 }

@@ -4,6 +4,8 @@ spring:
   grpc:
     server:
       port: 50051
+      reflection:
+        enabled: true
 
   datasource:
     url: jdbc:postgresql://localhost:5432/recipe

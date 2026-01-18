@@ -31,9 +31,11 @@ public class RecipeServiceGrpcImpl extends RecipeServiceGrpc.RecipeServiceImplBa
     @PostConstruct
     public void initData() {
 
-        com.recipe.data.jdbc.model.Recipe recipe1 = new com.recipe.data.jdbc.model.Recipe();
-        recipe1.setTitle("Spaghetti Bolognese");
-        recipeRepository.save(recipe1);
+        log.info("Initializing RecipeServiceGrpcImpl with sample data.");
+
+//        com.recipe.data.jdbc.model.Recipe recipe1 = new com.recipe.data.jdbc.model.Recipe();
+//        recipe1.setTitle("Spaghetti Bolognese");
+//        recipeRepository.save(recipe1);
 
     }
 
