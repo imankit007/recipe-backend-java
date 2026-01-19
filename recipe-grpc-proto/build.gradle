@@ -1,5 +1,9 @@
 plugins {
-    id 'com.google.protobuf' version '0.9.4'
+    id 'com.google.protobuf'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+
+
 }
 
 repositories {
@@ -7,17 +11,13 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'io.grpc', name: 'grpc-services', version: '1.76.0'
-    testImplementation 'org.springframework.grpc:spring-grpc-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation group:'io.grpc', name:'grpc-protobuf', version: '1.76.0'
-    implementation group:'io.grpc', name:'grpc-stub', version:'1.76.0'
-    implementation group:'io.grpc', name:'grpc-netty-shaded', version:'1.76.0'
+    implementation 'io.grpc:grpc-services'
+    implementation 'io.grpc:grpc-protobuf'
+    implementation 'io.grpc:grpc-stub'
+    implementation 'io.grpc:grpc-netty-shaded'
 
 }
-ext {
-    set('springGrpcVersion', "0.12.0")
-}
+
 
 dependencyManagement {
     imports {
