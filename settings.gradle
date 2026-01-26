@@ -1,6 +1,6 @@
 rootProject.name = 'recipe-backend-java'
 
-include 'recipe-core'
+include 'recipe-common'
 include 'recipe-data'
 include 'recipe-api-grpc'
 include 'recipe-grpc-proto'

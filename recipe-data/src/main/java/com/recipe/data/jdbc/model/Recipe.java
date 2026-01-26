@@ -2,7 +2,7 @@ package com.recipe.data.jdbc.model;
 
 
 import com.recipe.core.data.BaseEntity;
-import com.recipe.core.enums.DifficultyLevel;
+import com.recipe.core.enums.RecipeDifficultyLevel;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,7 +33,7 @@ public class Recipe extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "DIFFICULTY_LEVEL", nullable = false)
-    private DifficultyLevel difficultyLevel;
+    private RecipeDifficultyLevel difficultyLevel;
 
     @OneToMany(
             mappedBy = "recipe",

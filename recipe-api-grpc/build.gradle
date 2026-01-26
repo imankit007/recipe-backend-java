@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(':recipe-core')
+    implementation project(':recipe-common')
     implementation project(':recipe-data')
     implementation project(':recipe-grpc-proto')
 

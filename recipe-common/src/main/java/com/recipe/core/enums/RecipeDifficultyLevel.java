@@ -1,6 +1,6 @@
 package com.recipe.core.enums;
 
-public enum DifficultyLevel {
+public enum RecipeDifficultyLevel {
     EASY,
     MEDIUM,
     HARD

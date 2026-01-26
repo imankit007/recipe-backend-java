@@ -54,8 +54,6 @@ public class RecipeController {
         return new RecipeDto(response.getRecipe().getId(), response.getRecipe().getTitle());
     }
 
-
-
     public record PagedResponse<T> (
             List<T> content,
             int page,
