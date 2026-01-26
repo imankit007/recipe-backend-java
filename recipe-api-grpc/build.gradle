@@ -37,4 +37,7 @@ dependencies {
     //Migrations
     implementation project(":recipe-migration")
     implementation 'org.flywaydb:flyway-database-postgresql'
+
+    // Guava dependency
+    implementation("com.google.guava:guava:33.5.0-jre")
 }
