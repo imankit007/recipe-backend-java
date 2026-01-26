@@ -33,4 +33,8 @@ dependencies {
 
     // Database driver
     implementation 'org.postgresql:postgresql'
+
+    //Migrations
+    implementation project(":recipe-migration")
+    implementation 'org.flywaydb:flyway-database-postgresql'
 }

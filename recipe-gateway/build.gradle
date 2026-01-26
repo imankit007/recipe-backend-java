@@ -11,17 +11,22 @@ dependencyManagement {
 }
 
 dependencies {
-    implementation project(":recipe-grpc-proto")
-    implementation "org.springframework.grpc:spring-grpc-spring-boot-starter"
 
+    // Project dependencies
+    implementation project(":recipe-grpc-proto")
+
+    // Spring Boot starter dependencies
+    implementation "org.springframework.grpc:spring-grpc-spring-boot-starter"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0"
+
+    // gRPC dependencies
     modules {
         module("io.grpc:grpc-netty") {
             replacedBy("io.grpc:grpc-netty-shaded", "Use Netty shaded instead of regular Netty")
         }
     }
-    implementation("org.springframework.boot:spring-boot-starter-web")
 
-    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0"
 }
 
 test {

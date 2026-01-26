@@ -43,6 +43,10 @@ protobuf {
     }
 }
 
+tasks.register("bufLint", Exec) {
+    commandLine "buf", "lint"
+}
+
 bootJar {
     enabled = false
 }

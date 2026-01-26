@@ -1,32 +1,35 @@
 package com.recipe.grpc;
 
+import com.recipe.core.utils.PageUtils;
 import com.recipe.data.jdbc.repository.RecipeRepository;
-import com.recipe.grpc.api.recipe.v1.ListRecipesRequest;
-import com.recipe.grpc.api.recipe.v1.ListRecipesResponse;
-import com.recipe.grpc.api.recipe.v1.Recipe;
-import com.recipe.grpc.api.recipe.v1.RecipeServiceGrpc;
+import com.recipe.grpc.adapter.RecipeServiceGrpcAdapter;
 import io.grpc.stub.StreamObserver;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.grpc.server.service.GrpcService;
+import com.recipe.grpc.api.recipe.v1.*;
 
+
+import java.awt.print.Pageable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static java.util.stream.Collectors.toList;
 
 @GrpcService
 @Slf4j
 public class RecipeServiceGrpcImpl extends RecipeServiceGrpc.RecipeServiceImplBase {
 
-
-    // In-memory store: id -> Recipe
-    private final Map<String, Recipe> store = new ConcurrentHashMap<>();
-
     @Autowired
     private RecipeRepository recipeRepository;
 
+    @Autowired
+    private RecipeServiceGrpcAdapter recipeServiceGrpcAdapter;
 
     @PostConstruct
     public void initData() {
@@ -39,17 +42,12 @@ public class RecipeServiceGrpcImpl extends RecipeServiceGrpc.RecipeServiceImplBa
 
     }
 
-//    @Override
-//    public void getRecipe(GetRecipeRequest request, StreamObserver<Recipe> responseObserver) {
-//        String id = request.getId();
-//        Recipe found = store.get(id);
-//        if (found == null) {
-//            responseObserver.onError(Status.NOT_FOUND.withDescription("Recipe not found: " + id).asRuntimeException());
-//            return;
-//        }
-//        responseObserver.onNext(found);
-//        responseObserver.onCompleted();
-//    }
+    @Override
+    public void getRecipe(GetRecipeRequest request, StreamObserver<GetRecipeResponse> responseObserver) {
+        log.info("Received request to recipe request of type: {}, content: {}", request.getClass().getName(), request);
+        responseObserver.onNext(recipeServiceGrpcAdapter.getRecipe(request));
+        responseObserver.onCompleted();
+    }
 
 //    @Override
 //    public void createRecipe(CreateRecipeRequest request, StreamObserver<Recipe> responseObserver) {
@@ -110,15 +108,17 @@ public class RecipeServiceGrpcImpl extends RecipeServiceGrpc.RecipeServiceImplBa
     @Override
     @Transactional
     public void listRecipes(ListRecipesRequest request, StreamObserver<ListRecipesResponse> responseObserver) {
+        PageRequest pageable = PageRequest.of(request.getPage(), request.getSize());
 
-        Collection<Recipe> recipes = recipeRepository.findAll().stream().map(
-                recipe -> Recipe.newBuilder()
-                        .setId(recipe.getId().toString())
-                        .setTitle(recipe.getTitle())
-                        .build()
-        ).toList();
+        Page<com.recipe.data.jdbc.model.Recipe> recipePage = recipeRepository.findAll(pageable);
         ListRecipesResponse response = ListRecipesResponse.newBuilder()
-                .addAllRecipes(recipes)
+                .addAllRecipes(recipePage.getContent().stream().map(r ->
+                        com.recipe.grpc.api.recipe.v1.Recipe.newBuilder()
+                                .setId(r.getId())
+                                .setTitle(r.getTitle())
+                                .build()
+                ).toList())
+                .setPage(PageUtils.toGrpcPage(recipePage, request.getPage()))
                 .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();

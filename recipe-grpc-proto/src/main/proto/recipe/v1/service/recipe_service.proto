@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package recipe;
+
+option java_package = "com.recipe.grpc.api.recipe.v1";
+option java_multiple_files = true;
+option java_outer_classname = "RecipeServiceProto";
+
+import "common/v1/page.proto";
+import "recipe/v1/model/recipe.proto";
+
+
+service RecipeService {
+
+  rpc CreateRecipe(CreateRecipeRequest) returns (CreateRecipeResponse) {}
+
+  rpc GetRecipe(GetRecipeRequest) returns (GetRecipeResponse) {}
+
+  rpc ListRecipes(ListRecipesRequest) returns (ListRecipesResponse) {}
+
+  rpc UpdateRecipe(UpdateRecipeRequest) returns (UpdateRecipeResponse) {}
+
+  rpc DeleteRecipe(DeleteRecipeRequest) returns (DeleteRecipeResponse) {}
+
+}
+
+message GetRecipeRequest {
+  int64 id = 1;
+}
+
+message GetRecipeResponse{
+  Recipe recipe = 1;
+}
+
+message CreateRecipeRequest {
+  Recipe recipe = 1;
+}
+
+message CreateRecipeResponse {
+  Recipe recipe = 1;
+}
+
+message UpdateRecipeRequest {
+  Recipe recipe = 1;
+}
+
+message UpdateRecipeResponse {
+  Recipe recipe = 1;
+}
+
+message DeleteRecipeRequest {
+  int64 id = 1;
+}
+
+message DeleteRecipeResponse {
+
+}
+
+message ListRecipesRequest {
+
+  uint32 page = 1;
+
+  uint32 size = 2;
+
+
+}
+
+message ListRecipesResponse {
+  repeated Recipe recipes = 1;
+  Page page = 2;
+}

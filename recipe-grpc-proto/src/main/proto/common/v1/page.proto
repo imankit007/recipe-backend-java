@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_package = "com.recipe.grpc.api.common.v1";
+option java_multiple_files = true;
+option java_outer_classname = "PageProto";
+
+
+message Page {
+
+  uint32 page = 1;
+
+  uint32 size = 2;
+
+  uint64 total_elements = 3;
+
+  uint32 total_pages = 4;
+
+  optional bool first = 5;
+
+  optional bool last = 6;
+
+}
