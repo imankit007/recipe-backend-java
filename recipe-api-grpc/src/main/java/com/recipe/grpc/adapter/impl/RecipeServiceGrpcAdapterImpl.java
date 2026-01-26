@@ -1,14 +1,21 @@
 package com.recipe.grpc.adapter.impl;
 
 
+import com.recipe.core.utils.EnumMapper;
+import com.recipe.core.utils.PageUtils;
 import com.recipe.data.jdbc.model.Recipe;
 import com.recipe.data.jdbc.repository.RecipeRepository;
 import com.recipe.grpc.adapter.RecipeServiceGrpcAdapter;
 import com.recipe.grpc.api.recipe.v1.GetRecipeRequest;
 import com.recipe.grpc.api.recipe.v1.GetRecipeResponse;
+import com.recipe.grpc.api.recipe.v1.ListRecipesRequest;
+import com.recipe.grpc.api.recipe.v1.ListRecipesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.EnumMap;
 import java.util.Optional;
 
 @Service
@@ -17,6 +24,9 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
 
     @Autowired
     private RecipeRepository recipeRepository;
+
+    @Autowired
+    private EnumMapper enumMapper;
 
 
     public GetRecipeResponse getRecipe(GetRecipeRequest getRecipeRequest) {
@@ -30,6 +40,7 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
             responseBuilder.setRecipe(
                     com.recipe.grpc.api.recipe.v1.Recipe.newBuilder().setId(recipe1.getId())
                             .setTitle(recipe1.getTitle())
+                            .setDifficulty(enumMapper.toProto(recipe1.getDifficultyLevel()))
                             .build()
             );
         });
@@ -37,5 +48,21 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
         return responseBuilder.build();
     }
 
+    @Override
+    public ListRecipesResponse listRecipes(ListRecipesRequest request) {
+        PageRequest pageable = org.springframework.data.domain.PageRequest.of(request.getPage(), request.getSize());
 
+        Page<Recipe> recipePage = recipeRepository.findAll(pageable);
+        ListRecipesResponse.Builder responseBuilder = ListRecipesResponse.newBuilder()
+                .addAllRecipes(recipePage.getContent().stream().map(r ->
+                        com.recipe.grpc.api.recipe.v1.Recipe.newBuilder()
+                                .setId(r.getId())
+                                .setTitle(r.getTitle())
+                                .setDifficulty(enumMapper.toProto(r.getDifficultyLevel()))
+                                .build()
+                ).toList())
+                .setPage(PageUtils.toGrpcPage(recipePage, request.getPage()));
+
+        return responseBuilder.build();
+    }
 }

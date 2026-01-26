@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "com.recipe.grpc.api.recipe.v1";
+option java_multiple_files = true;
+
+enum RecipeDifficulty {
+  RECIPE_DIFFICULTY_UNSPECIFIED = 0;
+  RECIPE_DIFFICULTY_EASY = 1;
+  RECIPE_DIFFICULTY_MEDIUM = 2;
+  RECIPE_DIFFICULTY_HARD = 3;
+}

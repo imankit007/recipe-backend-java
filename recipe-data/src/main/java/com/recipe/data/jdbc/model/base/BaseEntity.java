@@ -1,4 +1,4 @@
-package com.recipe.core.data;
+package com.recipe.data.jdbc.model.base;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,7 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

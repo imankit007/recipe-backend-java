@@ -31,17 +31,6 @@ public class RecipeServiceGrpcImpl extends RecipeServiceGrpc.RecipeServiceImplBa
     @Autowired
     private RecipeServiceGrpcAdapter recipeServiceGrpcAdapter;
 
-    @PostConstruct
-    public void initData() {
-
-        log.info("Initializing RecipeServiceGrpcImpl with sample data.");
-
-//        com.recipe.data.jdbc.model.Recipe recipe1 = new com.recipe.data.jdbc.model.Recipe();
-//        recipe1.setTitle("Spaghetti Bolognese");
-//        recipeRepository.save(recipe1);
-
-    }
-
     @Override
     public void getRecipe(GetRecipeRequest request, StreamObserver<GetRecipeResponse> responseObserver) {
         log.info("Received request to recipe request of type: {}, content: {}", request.getClass().getName(), request);
@@ -108,19 +97,8 @@ public class RecipeServiceGrpcImpl extends RecipeServiceGrpc.RecipeServiceImplBa
     @Override
     @Transactional
     public void listRecipes(ListRecipesRequest request, StreamObserver<ListRecipesResponse> responseObserver) {
-        PageRequest pageable = PageRequest.of(request.getPage(), request.getSize());
-
-        Page<com.recipe.data.jdbc.model.Recipe> recipePage = recipeRepository.findAll(pageable);
-        ListRecipesResponse response = ListRecipesResponse.newBuilder()
-                .addAllRecipes(recipePage.getContent().stream().map(r ->
-                        com.recipe.grpc.api.recipe.v1.Recipe.newBuilder()
-                                .setId(r.getId())
-                                .setTitle(r.getTitle())
-                                .build()
-                ).toList())
-                .setPage(PageUtils.toGrpcPage(recipePage, request.getPage()))
-                .build();
-        responseObserver.onNext(response);
+        log.info("Received request to recipe request of type: {}, content: {}", request.getClass().getName(), request);
+        responseObserver.onNext(recipeServiceGrpcAdapter.listRecipes(request));
         responseObserver.onCompleted();
     }
 }

@@ -1,7 +1,7 @@
 package com.recipe.data.jdbc.model;
 
 
-import com.recipe.core.data.BaseEntity;
+import com.recipe.data.jdbc.model.base.BaseEntity;
 import com.recipe.core.enums.RecipeDifficultyLevel;
 import jakarta.persistence.*;
 import lombok.Data;
