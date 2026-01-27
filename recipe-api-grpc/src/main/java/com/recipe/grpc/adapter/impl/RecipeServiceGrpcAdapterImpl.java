@@ -6,10 +6,7 @@ import com.recipe.core.utils.PageUtils;
 import com.recipe.data.jdbc.model.Recipe;
 import com.recipe.data.jdbc.repository.RecipeRepository;
 import com.recipe.grpc.adapter.RecipeServiceGrpcAdapter;
-import com.recipe.grpc.api.recipe.v1.GetRecipeRequest;
-import com.recipe.grpc.api.recipe.v1.GetRecipeResponse;
-import com.recipe.grpc.api.recipe.v1.ListRecipesRequest;
-import com.recipe.grpc.api.recipe.v1.ListRecipesResponse;
+import com.recipe.grpc.api.recipe.v1.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,5 +61,20 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
                 .setPage(PageUtils.toGrpcPage(recipePage, request.getPage()));
 
         return responseBuilder.build();
+    }
+
+    @Override
+    public CreateRecipeResponse createRecipe(CreateRecipeRequest request) {
+        return CreateRecipeResponse.newBuilder().build();
+    }
+
+    @Override
+    public UpdateRecipeResponse updateRecipe(UpdateRecipeRequest request) {
+        return UpdateRecipeResponse.newBuilder().build();
+    }
+
+    @Override
+    public DeleteRecipeResponse deleteRecipe(DeleteRecipeRequest request) {
+        return DeleteRecipeResponse.newBuilder().build();
     }
 }
