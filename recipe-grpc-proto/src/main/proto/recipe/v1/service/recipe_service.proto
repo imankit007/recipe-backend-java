@@ -8,6 +8,11 @@ option java_outer_classname = "RecipeServiceProto";
 
 import "common/v1/page.proto";
 import "recipe/v1/model/recipe.proto";
+import "recipe/v1/model/ingredient_request.proto";
+import "recipe/v1/model/recipe_step.proto";
+
+import "recipe/v1/enums/recipe_difficulty_enum.proto";
+
 
 
 service RecipeService {
@@ -32,8 +37,36 @@ message GetRecipeResponse{
   Recipe recipe = 1;
 }
 
+
+// CreateRecipeRequest is used to create a new recipe
 message CreateRecipeRequest {
-  Recipe recipe = 1;
+
+  // Title of the recipe
+  string title = 1;
+
+  // Description of the recipe
+  string description = 2;
+
+  // Difficulty level of the recipe
+  optional RecipeDifficulty difficulty = 3;
+
+  // Preparation time in minutes
+  uint32 prep_time_in_minutes = 4;
+
+  // Cook time in minutes
+  uint32 cook_time_in_minutes = 5;
+
+  // Number of servings
+  uint32 servings = 6;
+
+  // List of ingredients
+  repeated IngredientRequest ingredients = 7;
+
+  // List of recipe steps
+  repeated RecipeStep steps = 8;
+
+
+
 }
 
 message CreateRecipeResponse {

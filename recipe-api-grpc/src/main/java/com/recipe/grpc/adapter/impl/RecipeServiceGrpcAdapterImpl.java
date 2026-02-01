@@ -65,7 +65,16 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
 
     @Override
     public CreateRecipeResponse createRecipe(CreateRecipeRequest request) {
-        return CreateRecipeResponse.newBuilder().build();
+        return CreateRecipeResponse.newBuilder()
+                .setRecipe(
+
+                        com.recipe.grpc.api.recipe.v1.Recipe.newBuilder()
+                                .setId(1L)
+                                .setTitle(request.getTitle())
+                                .setDifficulty(request.getDifficulty())
+                                .build()
+                )
+                .build();
     }
 
     @Override

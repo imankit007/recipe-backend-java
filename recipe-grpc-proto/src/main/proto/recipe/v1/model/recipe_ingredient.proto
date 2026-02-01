@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_package = "com.recipe.grpc.api.recipe.v1";
+option java_multiple_files = true;
+option java_outer_classname = "RecipeIngredientProto";
+
+//RecipeIngredient represents an ingredient used in CreateRecipeRequest
+message RecipeIngredient {
+  // Unique identifier for the ingredient
+  int64 id = 1;
+
+  // Name of the ingredient
+  string name = 2;
+
+  // Quantity of the ingredient
+  float quantity = 3;
+
+  // Unit of measurement for the ingredient
+  string unit = 4;
+}

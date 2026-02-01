@@ -5,6 +5,8 @@ option java_multiple_files = true;
 option java_outer_classname = "RecipeProto";
 
 import "recipe/v1/enums/recipe_difficulty_enum.proto";
+import "recipe/v1/model/recipe_ingredient.proto";
+import "recipe/v1/model/recipe_step.proto";
 
 // A basic Recipe message
 message Recipe {
@@ -14,6 +16,18 @@ message Recipe {
   string title = 2;
 
   optional RecipeDifficulty difficulty = 3;
+
+  string description = 4;
+
+  uint32 prep_time_in_minutes = 5;
+
+  uint32 cook_time_in_minutes = 6;
+
+  uint32 servings = 7;
+
+  repeated RecipeIngredient ingredients = 8;
+
+  repeated RecipeStep steps = 9;
 
 }
 

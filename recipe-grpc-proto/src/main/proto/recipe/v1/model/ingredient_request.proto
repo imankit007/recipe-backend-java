@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option java_package = "com.recipe.grpc.api.recipe.v1";
+option java_multiple_files = true;
+option java_outer_classname = "IngredientRequestProto";
+
+//import "recipe/v1/enums/recipe_difficulty_enum.proto";
+
+message IngredientRequest {
+
+  string name = 1;
+
+  int64 ingredient_id = 2;
+
+  double quantity = 3;
+
+  string unit = 4;
+
+}
+
+
+
+

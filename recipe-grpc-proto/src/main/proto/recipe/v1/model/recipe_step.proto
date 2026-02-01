@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_package = "com.recipe.grpc.api.recipe.v1";
+option java_multiple_files = true;
+option java_outer_classname = "RecipeStepProto";
+
+message RecipeStep {
+
+  int32 step_number = 2;
+
+  string instruction = 3;
+
+  uint32 duration_in_minutes = 4;
+
+  string media_url = 5;
+
+}
