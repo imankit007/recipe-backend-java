@@ -25,11 +25,11 @@ import lombok.EqualsAndHashCode;
 public class RecipeReview extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_RECIPE_REVIEW_USER"))
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "recipe_id", nullable = false)
+    @JoinColumn(name = "recipe_id", nullable = false, foreignKey = @ForeignKey(name = "FK_RECIPE_REVIEW_RECIPE"))
     private Recipe recipe;
 
     @Min(1)

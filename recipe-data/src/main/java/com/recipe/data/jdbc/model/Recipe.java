@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -43,6 +44,15 @@ public class Recipe extends BaseEntity {
     )
     @OrderBy("stepNumber ASC")
     private List<RecipeStep> steps = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "recipe",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private HashSet<RecipeIngredient> ingredients = new HashSet<>();
+
 
 
 }

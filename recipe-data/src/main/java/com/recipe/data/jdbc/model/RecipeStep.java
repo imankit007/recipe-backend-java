@@ -25,6 +25,6 @@ public class RecipeStep extends BaseEntity {
     private String mediaUrl;
 
     @ManyToOne
-    @JoinColumn(name = "recipe_id", nullable = false)
+    @JoinColumn(name = "recipe_id", nullable = false, foreignKey = @ForeignKey(name = "FK_RECIPE_STEP_RECIPE"))
     private Recipe recipe;
 }

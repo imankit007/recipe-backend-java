@@ -13,8 +13,6 @@ spring:
         jdbc:
           time_zone: Asia/Kolkata
     show-sql: true
-
-
 logging:
   level:
     org:
