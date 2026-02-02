@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -59,7 +60,7 @@ public class RecipeConverter {
         Map<Long, Ingredient> ingredientMap =
                 ingredientRepository.findAllById(ingredientIds)
                         .stream()
-                        .collect(Collectors.toMap(Ingredient::getId, i -> i));
+                        .collect(Collectors.toMap(Ingredient::getId, Function.identity()));
 
 
         return protoRecipeIngredientList.stream()
