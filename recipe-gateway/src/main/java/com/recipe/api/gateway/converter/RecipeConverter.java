@@ -5,7 +5,6 @@ import com.recipe.api.gateway.dto.reipe.*;
 import com.recipe.core.utils.EnumMapper;
 import com.recipe.grpc.api.recipe.v1.CreateRecipeRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component

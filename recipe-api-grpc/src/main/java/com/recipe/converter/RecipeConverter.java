@@ -9,9 +9,13 @@ import com.recipe.data.jdbc.model.RecipeIngredient;
 import com.recipe.data.jdbc.model.RecipeStep;
 import com.recipe.data.jdbc.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -31,7 +35,7 @@ public class RecipeConverter {
         recipe.setCookTimeMinutes(request.getCookTimeInMinutes());
         recipe.setServings(request.getServings());
         recipe.setSteps(request.getStepsList().stream().map(it -> toRecipeStepEntity(it, recipe)).toList());
-        recipe.setIngredients(request.getIngredientsList().stream().map(it -> toRecipeIngredientEntity(it, recipe)).collect(Collectors.toSet()));
+        recipe.setIngredients(toRecipeIngredientEntitySet(request.getIngredientsList(), recipe));
         return recipe;
     }
 
@@ -45,16 +49,29 @@ public class RecipeConverter {
         return step;
     }
 
-    public Ingredient toIngredientEntity(Long ingredientId) {
-        return ingredientRepository.findById(ingredientId).orElse(null);
+    public Set<RecipeIngredient> toRecipeIngredientEntitySet(List<com.recipe.grpc.api.recipe.v1.IngredientRequest> protoRecipeIngredientList, Recipe recipe) {
+
+        Set<Long> ingredientIds = protoRecipeIngredientList.stream()
+                .map(com.recipe.grpc.api.recipe.v1.IngredientRequest::getIngredientId)
+                .collect(Collectors.toSet());
+
+        Map<Long, Ingredient> ingredientMap =
+                ingredientRepository.findAllById(ingredientIds)
+                        .stream()
+                        .collect(Collectors.toMap(Ingredient::getId, i -> i));
+
+
+        return protoRecipeIngredientList.stream()
+                .map(ri -> toRecipeIngredientEntity(ri, recipe, ingredientMap))
+                .collect(Collectors.toSet());
     }
 
-    public RecipeIngredient toRecipeIngredientEntity(com.recipe.grpc.api.recipe.v1.IngredientRequest protoRecipeIngredient, Recipe recipe) {
+    public RecipeIngredient toRecipeIngredientEntity(com.recipe.grpc.api.recipe.v1.IngredientRequest protoRecipeIngredient, Recipe recipe, Map<Long, Ingredient> ingredientMap) {
         RecipeIngredient recipeIngredient = new RecipeIngredient();
         recipeIngredient.setRecipe(recipe);
         recipeIngredient.setQuantity(BigDecimal.valueOf(protoRecipeIngredient.getQuantity()));
         recipeIngredient.setUnit(Unit.valueOf(protoRecipeIngredient.getUnit()));
-        recipeIngredient.setIngredient(toIngredientEntity(protoRecipeIngredient.getIngredientId()));
+        recipeIngredient.setIngredient(ingredientMap.get(protoRecipeIngredient.getIngredientId()));
         return recipeIngredient;
     }
 
@@ -67,26 +84,38 @@ public class RecipeConverter {
                 .setPrepTimeInMinutes(recipe.getPrepTimeMinutes() != null ? recipe.getPrepTimeMinutes() : 0)
                 .setCookTimeInMinutes(recipe.getCookTimeMinutes() != null ? recipe.getCookTimeMinutes() : 0)
                 .setServings(recipe.getServings() != null ? recipe.getServings() : 0)
-                .addAllSteps(
-                        recipe.getSteps().stream().map(step ->
-                                com.recipe.grpc.api.recipe.v1.RecipeStep.newBuilder()
-                                        .setStepNumber(step.getStepNumber())
-                                        .setInstruction(step.getInstruction())
-                                        .setDurationInMinutes(step.getDurationMinutes() != null ? step.getDurationMinutes() : 0)
-                                        .setMediaUrl(step.getMediaUrl() != null ? step.getMediaUrl() : "")
-                                        .build()
-                        ).toList()
-                )
-                .addAllIngredients(
-                        recipe.getIngredients().stream().map(ri ->
-                                com.recipe.grpc.api.recipe.v1.RecipeIngredient.newBuilder()
-                                        .setId(ri.getIngredient().getId())
-                                        .setName(ri.getIngredient().getName())
-                                        .setQuantity(ri.getQuantity().doubleValue())
-                                        .setUnit(ri.getUnit().name())
-                                        .build()
-                        ).toList()
-                )
+                .addAllSteps(toRecipeStepProtoList(recipe.getSteps()))
+                .addAllIngredients(toRecipeIngredientProtoList(recipe.getIngredients()))
+                .build();
+    }
+
+    private List<com.recipe.grpc.api.recipe.v1.RecipeIngredient> toRecipeIngredientProtoList(@NonNull Set<RecipeIngredient> recipeIngredientList) {
+        return recipeIngredientList.stream()
+                .map(this::toRecipeIngredientProto)
+                .collect(Collectors.toList());
+    }
+
+    private com.recipe.grpc.api.recipe.v1.RecipeIngredient toRecipeIngredientProto(RecipeIngredient ri) {
+        return com.recipe.grpc.api.recipe.v1.RecipeIngredient.newBuilder()
+                .setId(ri.getIngredient().getId())
+                .setName(ri.getIngredient().getName())
+                .setQuantity(ri.getQuantity().doubleValue())
+                .setUnit(ri.getUnit().name())
+                .build();
+    }
+
+    private List<com.recipe.grpc.api.recipe.v1.RecipeStep> toRecipeStepProtoList(List<RecipeStep> recipeStepList) {
+        return recipeStepList.stream()
+                .map(this::toRecipeStepProto)
+                .collect(Collectors.toList());
+    }
+
+    private com.recipe.grpc.api.recipe.v1.RecipeStep toRecipeStepProto(RecipeStep step) {
+        return com.recipe.grpc.api.recipe.v1.RecipeStep.newBuilder()
+                .setStepNumber(step.getStepNumber())
+                .setInstruction(step.getInstruction())
+                .setDurationInMinutes(step.getDurationMinutes() != null ? step.getDurationMinutes() : 0)
+                .setMediaUrl(step.getMediaUrl() != null ? step.getMediaUrl() : "")
                 .build();
     }
 
