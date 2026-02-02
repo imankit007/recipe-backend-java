@@ -65,8 +65,6 @@ message CreateRecipeRequest {
   // List of recipe steps
   repeated RecipeStep steps = 8;
 
-
-
 }
 
 message CreateRecipeResponse {

@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 
     }
 )
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true,exclude = {"user", "recipe"})
 public class RecipeReview extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -40,7 +40,7 @@ public class RecipeController {
         ListRecipesResponse response = getClient().listRecipes(request);
         return new PagedResponse<>(
                 response.getRecipesList().stream()
-                        .map(r -> new RecipeResponse(r.getId(), r.getTitle(), enumMapper.toDomain(r.getDifficulty())))
+                        .map(recipeConverter::toRecipeResponse)
                         .toList(),
                 Math.max(response.getPage().getPage() + 1, 1),
                 response.getPage().getSize(),
@@ -55,22 +55,17 @@ public class RecipeController {
     ) {
         GetRecipeRequest request = GetRecipeRequest.newBuilder().setId(id).build();
         GetRecipeResponse response = getClient().getRecipe(request);
-        return new RecipeResponse(response.getRecipe().getId(), response.getRecipe().getTitle(),
-                enumMapper.toDomain(response.getRecipe().getDifficulty()));
+        return recipeConverter.toRecipeResponse(response.getRecipe());
     }
 
     @PostMapping
     public RecipeResponse createRecipe(
             @RequestBody RecipeRequest recipeRequest
-    ){
+    ) {
         CreateRecipeRequest request = recipeConverter.toCreateRecipeRequest(recipeRequest);
         CreateRecipeResponse response = getClient().createRecipe(request);
-        return new RecipeResponse(response.getRecipe().getId(), response.getRecipe().getTitle(),
-                enumMapper.toDomain(response.getRecipe().getDifficulty()));
-
+        return recipeConverter.toRecipeResponse(response.getRecipe());
     }
-
-
 
 
 }

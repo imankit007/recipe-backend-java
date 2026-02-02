@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"recipe", "ingredient"})
 @Entity
 @Table(name = "RECIPE_INGREDIENTS")
 public class RecipeIngredient extends BaseEntity {
@@ -23,7 +23,7 @@ public class RecipeIngredient extends BaseEntity {
     )
     private Recipe recipe;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST})
     @JoinColumn(
         name = "INGREDIENT_ID",
         nullable = false,

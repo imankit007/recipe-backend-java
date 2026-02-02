@@ -10,8 +10,9 @@ import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"steps", "ingredients"})
 @Entity
 @Table(name = "RECIPES")
 @Data()
@@ -51,7 +52,7 @@ public class Recipe extends BaseEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    private HashSet<RecipeIngredient> ingredients = new HashSet<>();
+    private Set<RecipeIngredient> ingredients = new HashSet<>();
 
 
 

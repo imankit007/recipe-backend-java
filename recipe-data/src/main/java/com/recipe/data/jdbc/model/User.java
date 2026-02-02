@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
         @Index(name = "IDX_USER_DISPLAY_NAME", columnList = "EMAIL")
     }
 )
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {})
 public class User extends BaseEntity {
 
     @Column(name = "DISPLAY_NAME", nullable = false, unique = true)

@@ -1,8 +1,7 @@
 package com.recipe.api.gateway.converter;
 
 
-import com.recipe.api.gateway.dto.reipe.IngredientRequest;
-import com.recipe.api.gateway.dto.reipe.RecipeRequest;
+import com.recipe.api.gateway.dto.reipe.*;
 import com.recipe.core.utils.EnumMapper;
 import com.recipe.grpc.api.recipe.v1.CreateRecipeRequest;
 import lombok.RequiredArgsConstructor;
@@ -20,22 +19,22 @@ public class RecipeConverter {
 
         CreateRecipeRequest.Builder builder = CreateRecipeRequest.newBuilder();
 
-        if(request.title() != null){
+        if (request.title() != null) {
             builder.setTitle(request.title());
         }
-        if(request.description() != null){
+        if (request.description() != null) {
             builder.setDescription(request.description());
         }
-        if(request.prepTimeMinutes() != null){
+        if (request.prepTimeMinutes() != null) {
             builder.setPrepTimeInMinutes(request.prepTimeMinutes());
         }
-        if(request.cookTimeMinutes() != null){
+        if (request.cookTimeMinutes() != null) {
             builder.setCookTimeInMinutes(request.cookTimeMinutes());
         }
-        if(request.servings() != null){
+        if (request.servings() != null) {
             builder.setServings(request.servings());
         }
-        if(request.difficulty() != null){
+        if (request.difficulty() != null) {
             builder.setDifficulty(enumMapper.toProto(request.difficulty()));
         }
         for (IngredientRequest ingredient : request.ingredients()) {
@@ -55,9 +54,6 @@ public class RecipeConverter {
 
         if (ingredient.ingredientId() != null) {
             builder.setIngredientId(ingredient.ingredientId());
-        }
-        if (ingredient.name() != null) {
-            builder.setName(ingredient.name());
         }
         if (ingredient.quantity() != null) {
             builder.setQuantity(ingredient.quantity().floatValue());
@@ -88,5 +84,40 @@ public class RecipeConverter {
         return builder.build();
     }
 
+
+    public RecipeResponse toRecipeResponse(com.recipe.grpc.api.recipe.v1.Recipe recipe) {
+
+        return new RecipeResponse(
+                recipe.getId(),
+                recipe.getTitle(),
+                enumMapper.toDomain(recipe.getDifficulty()),
+                recipe.getPrepTimeInMinutes(),
+                recipe.getCookTimeInMinutes(),
+                recipe.getServings(),
+                recipe.getDescription(),
+                recipe.getIngredientsList().stream()
+                        .map(this::toRecipeIngredientResponse).toList(),
+                recipe.getStepsList().stream()
+                        .map(this::toRecipeStep).toList()
+        );
+    }
+
+    public RecipeIngredient toRecipeIngredientResponse(com.recipe.grpc.api.recipe.v1.RecipeIngredient protoIngredient) {
+        return new RecipeIngredient(
+                protoIngredient.getId(),
+                protoIngredient.getName(),
+                protoIngredient.getQuantity(),
+                protoIngredient.getUnit()
+        );
+    }
+
+    public RecipeStep toRecipeStep(com.recipe.grpc.api.recipe.v1.RecipeStep protoStep) {
+        return new RecipeStep(
+                protoStep.getStepNumber(),
+                protoStep.getInstruction(),
+                protoStep.getDurationInMinutes(),
+                protoStep.getMediaUrl()
+        );
+    }
 
 }

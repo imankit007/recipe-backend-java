@@ -13,7 +13,7 @@ message RecipeIngredient {
   string name = 2;
 
   // Quantity of the ingredient
-  float quantity = 3;
+  double quantity = 3;
 
   // Unit of measurement for the ingredient
   string unit = 4;

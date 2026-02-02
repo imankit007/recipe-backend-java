@@ -1,6 +1,7 @@
 package com.recipe.grpc.adapter.impl;
 
 
+import com.recipe.converter.RecipeConverter;
 import com.recipe.core.utils.EnumMapper;
 import com.recipe.core.utils.PageUtils;
 import com.recipe.data.jdbc.model.Recipe;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.EnumMap;
 import java.util.Optional;
@@ -25,7 +27,12 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
     @Autowired
     private EnumMapper enumMapper;
 
+    @Autowired
+    private RecipeConverter recipeConverter;
 
+
+    @Override
+    @Transactional
     public GetRecipeResponse getRecipe(GetRecipeRequest getRecipeRequest) {
 
         var recipeId = getRecipeRequest.getId();
@@ -33,12 +40,9 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
         Optional<Recipe> recipe = recipeRepository.findById(recipeId);
         GetRecipeResponse.Builder responseBuilder = GetRecipeResponse.newBuilder();
 
-        recipe.ifPresent(recipe1 -> {
+        recipe.ifPresent(it -> {
             responseBuilder.setRecipe(
-                    com.recipe.grpc.api.recipe.v1.Recipe.newBuilder().setId(recipe1.getId())
-                            .setTitle(recipe1.getTitle())
-                            .setDifficulty(enumMapper.toProto(recipe1.getDifficultyLevel()))
-                            .build()
+                  recipeConverter.toRecipeProto(it)
             );
         });
 
@@ -46,6 +50,7 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
     }
 
     @Override
+    @Transactional
     public ListRecipesResponse listRecipes(ListRecipesRequest request) {
         PageRequest pageable = org.springframework.data.domain.PageRequest.of(request.getPage(), request.getSize());
 
@@ -64,25 +69,23 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
     }
 
     @Override
+    @Transactional
     public CreateRecipeResponse createRecipe(CreateRecipeRequest request) {
+        Recipe recipe = recipeConverter.toRecipeEntity(request);
+        recipe = recipeRepository.save(recipe);
         return CreateRecipeResponse.newBuilder()
-                .setRecipe(
-
-                        com.recipe.grpc.api.recipe.v1.Recipe.newBuilder()
-                                .setId(1L)
-                                .setTitle(request.getTitle())
-                                .setDifficulty(request.getDifficulty())
-                                .build()
-                )
+                .setRecipe(recipeConverter.toRecipeProto(recipe))
                 .build();
     }
 
     @Override
+    @Transactional
     public UpdateRecipeResponse updateRecipe(UpdateRecipeRequest request) {
         return UpdateRecipeResponse.newBuilder().build();
     }
 
     @Override
+    @Transactional
     public DeleteRecipeResponse deleteRecipe(DeleteRecipeRequest request) {
         return DeleteRecipeResponse.newBuilder().build();
     }

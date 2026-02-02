@@ -17,5 +17,14 @@ spring:
           keep-alive-timeout: 10s
           keep-alive-without-calls: true
 
+springdoc:
+  show-actuator: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 server:
   port: 8081
