@@ -3,13 +3,13 @@ package com.recipe.converter;
 
 import com.recipe.core.enums.Unit;
 import com.recipe.core.utils.EnumMapper;
+import com.recipe.core.utils.ProtoSafeUtils;
 import com.recipe.data.jdbc.model.Ingredient;
 import com.recipe.data.jdbc.model.Recipe;
 import com.recipe.data.jdbc.model.RecipeIngredient;
 import com.recipe.data.jdbc.model.RecipeStep;
 import com.recipe.data.jdbc.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 
 @Component
 @RequiredArgsConstructor
@@ -67,6 +68,11 @@ public class RecipeConverter {
     }
 
     public RecipeIngredient toRecipeIngredientEntity(com.recipe.grpc.api.recipe.v1.IngredientRequest protoRecipeIngredient, Recipe recipe, Map<Long, Ingredient> ingredientMap) {
+
+        Ingredient ingredient = ingredientMap.get(protoRecipeIngredient.getIngredientId());
+        if (ingredient == null) {
+            throw new IllegalArgumentException("Ingredient with ID " + protoRecipeIngredient.getIngredientId() + " not found.");
+        }
         RecipeIngredient recipeIngredient = new RecipeIngredient();
         recipeIngredient.setRecipe(recipe);
         recipeIngredient.setQuantity(BigDecimal.valueOf(protoRecipeIngredient.getQuantity()));
@@ -79,17 +85,17 @@ public class RecipeConverter {
         return com.recipe.grpc.api.recipe.v1.Recipe.newBuilder()
                 .setId(recipe.getId())
                 .setTitle(recipe.getTitle())
-                .setDescription(recipe.getDescription() != null ? recipe.getDescription() : "")
+                .setDescription(ProtoSafeUtils.safe(recipe.getDescription()))
                 .setDifficulty(enumMapper.toProto(recipe.getDifficultyLevel()))
-                .setPrepTimeInMinutes(recipe.getPrepTimeMinutes() != null ? recipe.getPrepTimeMinutes() : 0)
-                .setCookTimeInMinutes(recipe.getCookTimeMinutes() != null ? recipe.getCookTimeMinutes() : 0)
-                .setServings(recipe.getServings() != null ? recipe.getServings() : 0)
+                .setPrepTimeInMinutes(ProtoSafeUtils.safe(recipe.getPrepTimeMinutes()))
+                .setCookTimeInMinutes(ProtoSafeUtils.safe(recipe.getCookTimeMinutes()))
+                .setServings(ProtoSafeUtils.safe(recipe.getServings()))
                 .addAllSteps(toRecipeStepProtoList(recipe.getSteps()))
                 .addAllIngredients(toRecipeIngredientProtoList(recipe.getIngredients()))
                 .build();
     }
 
-    private List<com.recipe.grpc.api.recipe.v1.RecipeIngredient> toRecipeIngredientProtoList(@NonNull Set<RecipeIngredient> recipeIngredientList) {
+    private List<com.recipe.grpc.api.recipe.v1.RecipeIngredient> toRecipeIngredientProtoList(Set<RecipeIngredient> recipeIngredientList) {
         return recipeIngredientList.stream()
                 .map(this::toRecipeIngredientProto)
                 .collect(Collectors.toList());
@@ -114,8 +120,8 @@ public class RecipeConverter {
         return com.recipe.grpc.api.recipe.v1.RecipeStep.newBuilder()
                 .setStepNumber(step.getStepNumber())
                 .setInstruction(step.getInstruction())
-                .setDurationInMinutes(step.getDurationMinutes() != null ? step.getDurationMinutes() : 0)
-                .setMediaUrl(step.getMediaUrl() != null ? step.getMediaUrl() : "")
+                .setDurationInMinutes(ProtoSafeUtils.safe(step.getDurationMinutes()))
+                .setMediaUrl(ProtoSafeUtils.safe(step.getMediaUrl()))
                 .build();
     }
 
