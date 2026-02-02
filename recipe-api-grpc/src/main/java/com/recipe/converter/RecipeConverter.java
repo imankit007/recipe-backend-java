@@ -9,6 +9,7 @@ import com.recipe.data.jdbc.model.Recipe;
 import com.recipe.data.jdbc.model.RecipeIngredient;
 import com.recipe.data.jdbc.model.RecipeStep;
 import com.recipe.data.jdbc.repository.IngredientRepository;
+import com.recipe.grpc.api.recipe.v1.IngredientRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -51,7 +52,7 @@ public class RecipeConverter {
         return step;
     }
 
-    public Set<RecipeIngredient> toRecipeIngredientEntitySet(List<com.recipe.grpc.api.recipe.v1.IngredientRequest> protoRecipeIngredientList, Recipe recipe) {
+    public Set<RecipeIngredient> toRecipeIngredientEntitySet(List<IngredientRequest> protoRecipeIngredientList, Recipe recipe) {
 
         Set<Long> ingredientIds = protoRecipeIngredientList.stream()
                 .map(com.recipe.grpc.api.recipe.v1.IngredientRequest::getIngredientId)
@@ -68,7 +69,7 @@ public class RecipeConverter {
                 .collect(Collectors.toSet());
     }
 
-    public RecipeIngredient toRecipeIngredientEntity(com.recipe.grpc.api.recipe.v1.IngredientRequest protoRecipeIngredient, Recipe recipe, Map<Long, Ingredient> ingredientMap) {
+    public RecipeIngredient toRecipeIngredientEntity(IngredientRequest protoRecipeIngredient, Recipe recipe, Map<Long, Ingredient> ingredientMap) {
 
         Ingredient ingredient = ingredientMap.get(protoRecipeIngredient.getIngredientId());
         if (ingredient == null) {
