@@ -8,8 +8,12 @@ import com.recipe.api.gateway.dto.reipe.RecipeResponse;
 import com.recipe.api.gateway.grpc.client.RecipeGrpcClient;
 import com.recipe.core.utils.EnumMapper;
 import com.recipe.grpc.api.recipe.v1.*;
+import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -62,9 +66,28 @@ public class RecipeController {
     public RecipeResponse createRecipe(
             @RequestBody RecipeRequest recipeRequest
     ) {
-        CreateRecipeRequest request = recipeConverter.toCreateRecipeRequest(recipeRequest);
+        CreateRecipeRequest request = recipeConverter.toRecipeRequest(recipeRequest);
         CreateRecipeResponse response = getClient().createRecipe(request);
         return recipeConverter.toRecipeResponse(response.getRecipe());
+    }
+
+    @PutMapping("/{id}")
+    public RecipeResponse updateRecipe(
+            @RequestParam("id") Long id,
+            @RequestBody RecipeRequest recipeRequest
+    ) {
+        UpdateRecipeRequest request = recipeConverter.toUpdateRecipeRequest(id, recipeRequest);
+        UpdateRecipeResponse response = getClient().updateRecipe(request);
+        return recipeConverter.toRecipeResponse(response.getRecipe());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRecipe( @Valid
+            @Parameter(description = "Id of recipe to be deleted", name = "id") @RequestParam("id") @NotNull Long id
+    ) {
+        DeleteRecipeRequest request = DeleteRecipeRequest.newBuilder().setId(id).build();
+        DeleteRecipeResponse response = getClient().deleteRecipe(request);
+        return ResponseEntity.noContent().build();
     }
 
 

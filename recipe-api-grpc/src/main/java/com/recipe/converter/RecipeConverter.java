@@ -127,5 +127,16 @@ public class RecipeConverter {
                 .build();
     }
 
+    public void updateRecipeEntity(Recipe existingRecipe, com.recipe.grpc.api.recipe.v1.UpdateRecipeRequest request) {
+        existingRecipe.setTitle(request.getTitle());
+        existingRecipe.setDescription(request.getDescription());
+        existingRecipe.setDifficultyLevel(enumMapper.toDomain(request.getDifficulty()));
+        existingRecipe.setPrepTimeMinutes(request.getPrepTimeInMinutes());
+        existingRecipe.setCookTimeMinutes(request.getCookTimeInMinutes());
+        existingRecipe.setServings(request.getServings());
+        existingRecipe.setSteps(request.getStepsList().stream().map(it -> toRecipeStepEntity(it, existingRecipe)).toList());
+        existingRecipe.setIngredients(toRecipeIngredientEntitySet(request.getIngredientsList(), existingRecipe));
+    }
+
 
 }

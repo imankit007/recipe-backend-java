@@ -8,6 +8,8 @@ import com.recipe.data.jdbc.model.Recipe;
 import com.recipe.data.jdbc.repository.RecipeRepository;
 import com.recipe.grpc.adapter.RecipeServiceGrpcAdapter;
 import com.recipe.grpc.api.recipe.v1.*;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,7 +44,7 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
 
         recipe.ifPresent(it -> {
             responseBuilder.setRecipe(
-                  recipeConverter.toRecipeProto(it)
+                    recipeConverter.toRecipeProto(it)
             );
         });
 
@@ -81,12 +83,30 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
     @Override
     @Transactional
     public UpdateRecipeResponse updateRecipe(UpdateRecipeRequest request) {
-        return UpdateRecipeResponse.newBuilder().build();
+        Long id = request.getId();
+        Recipe existingRecipe = recipeRepository.findById(id).orElseThrow(() -> new StatusRuntimeException(Status.NOT_FOUND));
+        recipeConverter.updateRecipeEntity(existingRecipe, request);
+
+        Recipe updatedRecipe = recipeRepository.save(existingRecipe);
+
+        return UpdateRecipeResponse.newBuilder()
+                .setRecipe(recipeConverter.toRecipeProto(updatedRecipe))
+                .build();
     }
 
     @Override
     @Transactional
     public DeleteRecipeResponse deleteRecipe(DeleteRecipeRequest request) {
+
+        Long id = request.getId();
+
+        if (recipeRepository.existsById(id)) {
+            recipeRepository.deleteById(id);
+        } else {
+            throw new StatusRuntimeException(Status.NOT_FOUND);
+        }
+
+
         return DeleteRecipeResponse.newBuilder().build();
     }
 }

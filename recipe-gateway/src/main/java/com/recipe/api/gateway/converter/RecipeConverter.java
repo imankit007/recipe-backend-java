@@ -4,6 +4,7 @@ package com.recipe.api.gateway.converter;
 import com.recipe.api.gateway.dto.reipe.*;
 import com.recipe.core.utils.EnumMapper;
 import com.recipe.grpc.api.recipe.v1.CreateRecipeRequest;
+import com.recipe.grpc.api.recipe.v1.UpdateRecipeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ public class RecipeConverter {
     private final EnumMapper enumMapper;
 
 
-    public CreateRecipeRequest toCreateRecipeRequest(RecipeRequest request) {
+    public CreateRecipeRequest toRecipeRequest(RecipeRequest request) {
 
         CreateRecipeRequest.Builder builder = CreateRecipeRequest.newBuilder();
 
@@ -118,5 +119,41 @@ public class RecipeConverter {
                 protoStep.getMediaUrl()
         );
     }
+
+    public UpdateRecipeRequest toUpdateRecipeRequest(Long id, RecipeRequest request) {
+
+        UpdateRecipeRequest.Builder builder = UpdateRecipeRequest.newBuilder();
+
+        builder.setId(id);
+
+        if (request.title() != null) {
+            builder.setTitle(request.title());
+        }
+        if (request.description() != null) {
+            builder.setDescription(request.description());
+        }
+        if (request.prepTimeMinutes() != null) {
+            builder.setPrepTimeInMinutes(request.prepTimeMinutes());
+        }
+        if (request.cookTimeMinutes() != null) {
+            builder.setCookTimeInMinutes(request.cookTimeMinutes());
+        }
+        if (request.servings() != null) {
+            builder.setServings(request.servings());
+        }
+        if (request.difficulty() != null) {
+            builder.setDifficulty(enumMapper.toProto(request.difficulty()));
+        }
+        for (IngredientRequest ingredient : request.ingredients()) {
+            builder.addIngredients(toProtoIngredientRequest(ingredient));
+        }
+        for (com.recipe.api.gateway.dto.reipe.RecipeStep step : request.steps()) {
+            builder.addSteps(toProtoRecipeStep(step));
+        }
+        return builder.build();
+
+    }
+
+
 
 }
