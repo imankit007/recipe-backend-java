@@ -9,6 +9,7 @@ import com.recipe.api.gateway.grpc.client.RecipeGrpcClient;
 import com.recipe.core.utils.EnumMapper;
 import com.recipe.grpc.api.recipe.v1.*;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/recipes")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class RecipeController {
-
-    private final EnumMapper enumMapper;
 
     private final RecipeGrpcClient grpcClient;
 

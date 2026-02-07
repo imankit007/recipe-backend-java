@@ -1,4 +1,4 @@
-package com.recipe.data.jdbc.model;
+package com.recipe.data.auth.model;
 
 import com.recipe.data.base.model.BaseEntity;
 import com.recipe.core.enums.UserRole;
@@ -26,7 +26,7 @@ public class User extends BaseEntity {
     private String email;
 
     @Column(name = "PASSWORD", nullable = false)
-    private String passwordHash;
+    private String password;
 
     @Column(name = "AVATAR_URL", length = 500)
     private String avatarUrl;

@@ -1,4 +1,6 @@
 spring:
+#  autoconfigure:
+#    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
   application:
     name: recipe-gateway
   jackson:
@@ -23,6 +25,11 @@ spring:
           keep-alive-time: 30s
           keep-alive-timeout: 10s
           keep-alive-without-calls: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: 4d7525e78827173ea7718b0667293cbbd76857da6aa2f4d4f267044d762de580
 
 springdoc:
   show-actuator: false
@@ -35,3 +42,8 @@ management:
 
 server:
   port: 8081
+
+#logging:
+#  level:
+#    root: INFO
+#    org.springframework.security: TRACE

@@ -7,6 +7,8 @@ import com.recipe.api.gateway.dto.auth.LoginResponse;
 import com.recipe.api.gateway.grpc.client.AuthGrpcClient;
 import com.recipe.grpc.api.auth.v1.AuthServiceGrpc;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
 @RequiredArgsConstructor
+@SecurityRequirements()
 public class AuthController {
-
-
 
     private final AuthGrpcClient authGrpcClient;
 
     private final AuthConverter authConverter;
-
 
     private AuthServiceGrpc.AuthServiceBlockingStub getClient(){return authGrpcClient.getAuthService();}
 

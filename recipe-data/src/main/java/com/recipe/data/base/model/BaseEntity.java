@@ -1,6 +1,7 @@
 package com.recipe.data.base.model;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,6 +12,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @MappedSuperclass
+@EqualsAndHashCode(of = "id", callSuper = false)
 public abstract class BaseEntity {
 
     @Id
@@ -51,4 +53,6 @@ public abstract class BaseEntity {
     protected void onUpdate() {
         updatedAt = Instant.now();
     }
+
+
 }

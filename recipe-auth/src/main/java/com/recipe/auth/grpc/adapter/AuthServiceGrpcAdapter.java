@@ -1,4 +1,4 @@
-package com.recipeauth.grpc.adapter;
+package com.recipe.auth.grpc.adapter;
 
 
 import com.recipe.grpc.api.auth.v1.LoginRequest;

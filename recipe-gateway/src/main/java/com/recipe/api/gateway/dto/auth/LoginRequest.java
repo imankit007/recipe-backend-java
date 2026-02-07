@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Schema(description = "Login request containing username and password")
 public record LoginRequest(
-        @NotNull String username,
-        @NotNull String password
+        @NotNull @Schema(defaultValue = "ankit@gmail.com") String username,
+        @NotNull @Schema(defaultValue = "aerohive") String password
 ) {
 }

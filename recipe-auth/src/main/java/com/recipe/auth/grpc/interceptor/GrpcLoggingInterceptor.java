@@ -1,4 +1,4 @@
-package com.recipeauth.grpc.interceptor;
+package com.recipe.auth.grpc.interceptor;
 
 import io.grpc.*;
 import org.springframework.grpc.server.GlobalServerInterceptor;

@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 
 @Data
-@EqualsAndHashCode(callSuper = false, exclude = {"recipe", "ingredient"})
+@EqualsAndHashCode(callSuper = true, exclude = {"recipe", "ingredient"})
 @Entity
 @Table(name = "RECIPE_INGREDIENTS")
 public class RecipeIngredient extends BaseEntity {

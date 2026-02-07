@@ -1,5 +1,6 @@
 package com.recipe.data.jdbc.model;
 
+import com.recipe.data.auth.model.User;
 import com.recipe.data.base.model.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -21,12 +22,11 @@ import lombok.EqualsAndHashCode;
 
     }
 )
-@EqualsAndHashCode(callSuper = true,exclude = {"user", "recipe"})
+@EqualsAndHashCode(callSuper = true,exclude = {"recipe"})
 public class RecipeReview extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_RECIPE_REVIEW_USER"))
-    private User user;
+    @Column(name = "USER_ID", nullable = false)
+    private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "recipe_id", nullable = false, foreignKey = @ForeignKey(name = "FK_RECIPE_REVIEW_RECIPE"))
