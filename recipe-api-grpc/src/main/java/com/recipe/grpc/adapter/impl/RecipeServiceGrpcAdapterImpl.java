@@ -105,8 +105,6 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
         } else {
             throw new StatusRuntimeException(Status.NOT_FOUND);
         }
-
-
         return DeleteRecipeResponse.newBuilder().build();
     }
 }

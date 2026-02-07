@@ -13,7 +13,8 @@ import java.util.TimeZone;
 @EnableJpaRepositories(basePackages = "com.recipe.data.jdbc.repository")
 @EntityScan(basePackages = "com.recipe.data.jdbc.model")
 public class RecipeServiceApplication {
-    public static void main(String[] args) {
+    
+    static void main(String[] args) {
         // Ensure the JVM default timezone uses a Postgres-recognized ID (Asia/Kolkata)
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
         SpringApplication.run(RecipeServiceApplication.class, args);

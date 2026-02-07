@@ -1,4 +1,4 @@
-package com.recipe.data.jdbc.model.base;
+package com.recipe.data.base.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;

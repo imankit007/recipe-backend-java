@@ -1,6 +1,6 @@
 package com.recipe.data.jdbc.model;
 
-import com.recipe.data.jdbc.model.base.BaseEntity;
+import com.recipe.data.base.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

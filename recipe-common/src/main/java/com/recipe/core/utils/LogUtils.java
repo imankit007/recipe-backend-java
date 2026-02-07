@@ -1,4 +1,4 @@
-package com.recipe.utils;
+package com.recipe.core.utils;
 
 import lombok.extern.slf4j.Slf4j;
 

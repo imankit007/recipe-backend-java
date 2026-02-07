@@ -1,19 +1,19 @@
 spring:
   application:
-    name: recipe-api-grpc
+    name: recipe-auth-api-grpc
   grpc:
     server:
-      port: 50051
+      port: 50054
       reflection:
         enabled: true
   flyway:
     enabled: true
-    locations: classpath:recipe/migration
+    locations: classpath:auth/migration
     baseline-on-migrate: true
     baseline-version: 1
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/recipe_db
+    url: jdbc:postgresql://localhost:5432/recipe_auth_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver

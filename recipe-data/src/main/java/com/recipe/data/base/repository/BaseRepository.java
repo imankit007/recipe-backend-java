@@ -1,6 +1,6 @@
-package com.recipe.data.jdbc.repository.base;
+package com.recipe.data.base.repository;
 
-import com.recipe.data.jdbc.model.base.BaseEntity;
+import com.recipe.data.base.model.BaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;

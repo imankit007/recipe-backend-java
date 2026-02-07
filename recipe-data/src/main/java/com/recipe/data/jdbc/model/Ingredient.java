@@ -1,6 +1,6 @@
 package com.recipe.data.jdbc.model;
 
-import com.recipe.data.jdbc.model.base.BaseEntity;
+import com.recipe.data.base.model.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

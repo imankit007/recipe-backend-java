@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.grpc.server.service.GrpcService;
 
 @GrpcService
-@Slf4j
 public class RecipeServiceGrpcImpl extends RecipeServiceGrpc.RecipeServiceImplBase {
 
     @Autowired

@@ -15,29 +15,29 @@ repositories {
 }
 
 dependencies {
-    implementation project(':recipe-common')
-    implementation project(':recipe-data')
-    implementation project(':recipe-grpc-proto')
+    // Project Dependencies
+    implementation project(":recipe-common")
+    implementation project(":recipe-data")
+    implementation project(":recipe-grpc-proto")
+    implementation project(":recipe-migration")
 
-    // Spring Boot starter
-    implementation("org.springframework.boot:spring-boot-starter")
+    //Spring Boot starter dependencies
+    implementation "org.springframework.boot:spring-boot-starter"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
-    implementation 'org.springframework.grpc:spring-grpc-spring-boot-starter'
-
+    implementation "org.springframework.grpc:spring-grpc-spring-boot-starter"
 
     // gRPC dependencies
     implementation "io.grpc:grpc-protobuf"
     implementation "io.grpc:grpc-stub"
-    implementation 'io.grpc:grpc-netty-shaded'
+    implementation "io.grpc:grpc-netty-shaded"
     implementation "io.grpc:grpc-services"
 
     // Database driver
-    implementation 'org.postgresql:postgresql'
+    implementation "org.postgresql:postgresql"
 
     //Migrations
-    implementation project(":recipe-migration")
-    implementation 'org.flywaydb:flyway-database-postgresql'
+    implementation "org.flywaydb:flyway-database-postgresql"
 
     // Guava dependency
-    implementation("com.google.guava:guava:33.5.0-jre")
+    implementation "com.google.guava:guava:33.5.0-jre"
 }

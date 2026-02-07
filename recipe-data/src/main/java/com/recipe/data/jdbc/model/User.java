@@ -1,6 +1,6 @@
 package com.recipe.data.jdbc.model;
 
-import com.recipe.data.jdbc.model.base.BaseEntity;
+import com.recipe.data.base.model.BaseEntity;
 import com.recipe.core.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;

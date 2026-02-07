@@ -1,10 +1,9 @@
-package com.recipe.interceptor;
+package com.recipeauth.grpc.interceptor;
 
-import com.recipe.core.utils.LogUtils;
 import io.grpc.*;
 import org.springframework.grpc.server.GlobalServerInterceptor;
 import org.springframework.stereotype.Component;
-
+import com.recipe.core.utils.LogUtils;
 
 @Component
 @GlobalServerInterceptor
