@@ -150,3 +150,9 @@ ALTER TABLE IF EXISTS recipe_step
     ADD CONSTRAINT fk_recipe_step_recipe
     FOREIGN KEY (recipe_id)
     REFERENCES recipes (id);
+
+ALTER TABLE IF EXISTS recipes
+    ADD CONSTRAINT uk_recipe_title UNIQUE (title);
+
+ALTER TABLE IF EXISTS ingredients
+    ADD CONSTRAINT uk_ingredient_name UNIQUE (name);

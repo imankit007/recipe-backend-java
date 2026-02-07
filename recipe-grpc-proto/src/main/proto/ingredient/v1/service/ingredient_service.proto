@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package recipe;
+
+option java_package = "com.recipe.grpc.api.recipe.v1";
+option java_multiple_files = true;
+option java_outer_classname = "IngredientServiceProto";
+
+
+service IngredientService {
+  rpc CreateIngredient(CreateIngredientRequest) returns (CreateIngredientResponse) {}
+}
+
+
+message CreateIngredientRequest {
+  string name = 1;
+}
+
+message CreateIngredientResponse {
+  int64 id = 1;
+  string name = 2;
+}

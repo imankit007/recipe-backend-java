@@ -16,7 +16,7 @@ public record RecipeRequest(
         Integer cookTimeMinutes,
         @Min(1) Integer servings,
         @NotNull RecipeDifficultyLevel difficulty,
-        @NotEmpty List<IngredientRequest> ingredients,
+        @NotEmpty List<RecipeIngredientRequest> ingredients,
         @NotEmpty List<RecipeStep> steps
 ) {
 }

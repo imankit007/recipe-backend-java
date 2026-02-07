@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record IngredientRequest(
+public record RecipeIngredientRequest(
         Long ingredientId,
         BigDecimal quantity,
         String unit

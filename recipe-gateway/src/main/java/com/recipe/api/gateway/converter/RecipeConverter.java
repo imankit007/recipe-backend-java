@@ -37,7 +37,7 @@ public class RecipeConverter {
         if (request.difficulty() != null) {
             builder.setDifficulty(enumMapper.toProto(request.difficulty()));
         }
-        for (IngredientRequest ingredient : request.ingredients()) {
+        for (RecipeIngredientRequest ingredient : request.ingredients()) {
             builder.addIngredients(toProtoIngredientRequest(ingredient));
         }
         for (com.recipe.api.gateway.dto.reipe.RecipeStep step : request.steps()) {
@@ -48,7 +48,7 @@ public class RecipeConverter {
     }
 
 
-    public com.recipe.grpc.api.recipe.v1.IngredientRequest toProtoIngredientRequest(IngredientRequest ingredient) {
+    public com.recipe.grpc.api.recipe.v1.IngredientRequest toProtoIngredientRequest(RecipeIngredientRequest ingredient) {
 
         com.recipe.grpc.api.recipe.v1.IngredientRequest.Builder builder = com.recipe.grpc.api.recipe.v1.IngredientRequest.newBuilder();
 
@@ -144,7 +144,7 @@ public class RecipeConverter {
         if (request.difficulty() != null) {
             builder.setDifficulty(enumMapper.toProto(request.difficulty()));
         }
-        for (IngredientRequest ingredient : request.ingredients()) {
+        for (RecipeIngredientRequest ingredient : request.ingredients()) {
             builder.addIngredients(toProtoIngredientRequest(ingredient));
         }
         for (com.recipe.api.gateway.dto.reipe.RecipeStep step : request.steps()) {
