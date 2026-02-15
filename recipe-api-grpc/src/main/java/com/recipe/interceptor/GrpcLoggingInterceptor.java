@@ -17,7 +17,7 @@ public class GrpcLoggingInterceptor implements ServerInterceptor {
         long startTime = System.currentTimeMillis();
 
         ServerCall.Listener<ReqT> listener = next.startCall(
-                new ForwardingServerCall.SimpleForwardingServerCall<ReqT, RespT>(call) {
+                new ForwardingServerCall.SimpleForwardingServerCall<>(call) {
                     @Override
                     public void sendMessage(RespT message) {
                         long time = System.currentTimeMillis() - startTime;

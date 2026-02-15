@@ -2,21 +2,21 @@ package com.recipe.grpc.adapter.impl;
 
 
 import com.recipe.converter.RecipeConverter;
+import com.recipe.core.error.RecipeErrorCode;
 import com.recipe.core.utils.EnumMapper;
 import com.recipe.core.utils.PageUtils;
 import com.recipe.data.jdbc.model.Recipe;
 import com.recipe.data.jdbc.repository.RecipeRepository;
 import com.recipe.grpc.adapter.RecipeServiceGrpcAdapter;
 import com.recipe.grpc.api.recipe.v1.*;
-import io.grpc.Status;
-import io.grpc.StatusRuntimeException;
+import com.recipe.core.exception.GrpcException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.EnumMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -42,11 +42,9 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
         Optional<Recipe> recipe = recipeRepository.findById(recipeId);
         GetRecipeResponse.Builder responseBuilder = GetRecipeResponse.newBuilder();
 
-        recipe.ifPresent(it -> {
-            responseBuilder.setRecipe(
+        recipe.ifPresent(it -> responseBuilder.setRecipe(
                     recipeConverter.toRecipeProto(it)
-            );
-        });
+            ));
 
         return responseBuilder.build();
     }
@@ -84,7 +82,7 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
     @Transactional
     public UpdateRecipeResponse updateRecipe(UpdateRecipeRequest request) {
         Long id = request.getId();
-        Recipe existingRecipe = recipeRepository.findById(id).orElseThrow(() -> new StatusRuntimeException(Status.NOT_FOUND));
+        Recipe existingRecipe = recipeRepository.findById(id).orElseThrow(() -> new GrpcException(RecipeErrorCode.RECIPE_NOT_FOUND, Map.of("id", String.valueOf(id)), "en", "Recipe not found"));
         recipeConverter.updateRecipeEntity(existingRecipe, request);
 
         Recipe updatedRecipe = recipeRepository.save(existingRecipe);
@@ -103,7 +101,7 @@ public class RecipeServiceGrpcAdapterImpl implements RecipeServiceGrpcAdapter {
         if (recipeRepository.existsById(id)) {
             recipeRepository.deleteById(id);
         } else {
-            throw new StatusRuntimeException(Status.NOT_FOUND);
+            throw new GrpcException(RecipeErrorCode.RECIPE_NOT_FOUND, Map.of("id", String.valueOf(id)), "en", "Recipe not found");
         }
         return DeleteRecipeResponse.newBuilder().build();
     }

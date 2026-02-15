@@ -5,14 +5,13 @@ import com.recipe.grpc.api.recipe.v1.*;
 import io.grpc.stub.StreamObserver;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.grpc.server.service.GrpcService;
 
 @GrpcService
 @RequiredArgsConstructor
 public class RecipeServiceGrpcImpl extends RecipeServiceGrpc.RecipeServiceImplBase {
 
-    private RecipeServiceGrpcAdapter recipeServiceGrpcAdapter;
+    private final RecipeServiceGrpcAdapter recipeServiceGrpcAdapter;
 
     @Override
     public void getRecipe(GetRecipeRequest request, StreamObserver<GetRecipeResponse> responseObserver) {
