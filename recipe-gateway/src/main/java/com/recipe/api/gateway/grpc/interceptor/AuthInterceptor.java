@@ -5,6 +5,9 @@ import com.recipe.core.utils.JwtUtil;
 import io.grpc.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -12,10 +15,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.List;
 
 
+
 @RequiredArgsConstructor
 @Component
 public class AuthInterceptor implements ClientInterceptor {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthInterceptor.class);
     private JwtUtil jwtUtil;
 
     private static final List<String> PUBLIC_METHODS =
@@ -34,8 +39,6 @@ public class AuthInterceptor implements ClientInterceptor {
                     HttpServletRequest request = attributes.getRequest();
 
                     String authHeader = request.getHeader("Authorization");
-                    ;
-
                     if (authHeader != null) {
                         String token = authHeader.startsWith("Bearer ") ? authHeader.substring(7) : authHeader;
                         Metadata.Key<String> authKey =
@@ -46,9 +49,7 @@ public class AuthInterceptor implements ClientInterceptor {
                         headers.put(authKey, token);
                     }
                 }
-
-
-
+                log.info("AuthInterceptor received auth token: {}", headers.get(Metadata.Key.of("Authorization", Metadata.ASCII_STRING_MARSHALLER)));
                 super.start(responseListener, headers);
             }
         };

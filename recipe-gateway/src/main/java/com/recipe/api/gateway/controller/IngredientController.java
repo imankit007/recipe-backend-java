@@ -24,9 +24,8 @@ public class IngredientController {
     private final RecipeGrpcClient grpcClient;
 
     public IngredientServiceGrpc.IngredientServiceBlockingStub getClient() {
-        return grpcClient.getIngredientService();
+        return grpcClient.ingredient();
     }
-
 
     @PostMapping
     @Operation(

@@ -6,14 +6,12 @@ import com.recipe.api.gateway.dto.common.PagedResponse;
 import com.recipe.api.gateway.dto.reipe.RecipeRequest;
 import com.recipe.api.gateway.dto.reipe.RecipeResponse;
 import com.recipe.api.gateway.grpc.client.RecipeGrpcClient;
-import com.recipe.core.utils.EnumMapper;
 import com.recipe.grpc.api.recipe.v1.*;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +26,7 @@ public class RecipeController {
     private final RecipeConverter recipeConverter;
 
     public RecipeServiceGrpc.RecipeServiceBlockingStub getClient() {
-        return grpcClient.getRecipeService();
+        return grpcClient.recipe();
     }
 
     @GetMapping("/")

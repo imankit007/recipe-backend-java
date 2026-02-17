@@ -5,26 +5,6 @@ spring:
     name: recipe-gateway
   jackson:
     property-naming-strategy: SNAKE_CASE
-  grpc:
-    client:
-      default-channel:
-        address: static://localhost:50054
-        negotiation-type: plaintext
-      channels:
-        recipe-service:
-          address: static://localhost:50051
-          negotiation-type: plaintext
-          enable-keep-alive: true
-          keep-alive-time: 30s
-          keep-alive-timeout: 10s
-          keep-alive-without-calls: true
-        recipe-auth-service:
-          address: static://localhost:50054
-          negotiation-type: plaintext
-          enable-keep-alive: true
-          keep-alive-time: 30s
-          keep-alive-timeout: 10s
-          keep-alive-without-calls: true
   security:
     oauth2:
       resourceserver:
@@ -39,6 +19,22 @@ management:
     web:
       exposure:
         include: "*"
+
+grpc:
+  client:
+    recipe-service:
+      address: static://localhost:50051
+      negotiation-type: plaintext
+      enable-keep-alive: true
+      keep-alive-time: 30s
+      keep-alive-without-calls: true
+    recipe-auth-service:
+      address: static://localhost:50054
+      negotiation-type: plaintext
+      enable-keep-alive: true
+      keep-alive-time: 30s
+      keep-alive-timeout: 10s
+      keep-alive-without-calls: true
 
 server:
   port: 8081
