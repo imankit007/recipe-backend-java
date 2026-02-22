@@ -55,5 +55,11 @@ public class Recipe extends BaseEntity {
     private Set<RecipeIngredient> ingredients = new HashSet<>();
 
 
+    @Column(name = "AVG_RATING")
+    private Double avgRating;
+
+    @Column(name = "REVIEW_COUNT")
+    private Long reviewCount;
+
 
 }

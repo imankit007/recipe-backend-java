@@ -1,6 +1,7 @@
 package com.recipe.api.gateway.config;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -43,9 +44,9 @@ public class ApiGatewayOpenApiConfig {
     // so OpenAPI request/response models use camelCase as requested.
     @Bean
     public ModelResolver modelResolver() {
-        com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
-        // Use the default camel case strategy (no transformation) to keep property names in camelCase
-        jacksonObjectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE);
+        com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper = JsonMapper.builder().enable(
+                MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS
+        ).propertyNamingStrategy(PropertyNamingStrategies.SnakeCaseStrategy.INSTANCE).build();
         return new ModelResolver(jacksonObjectMapper);
     }
 

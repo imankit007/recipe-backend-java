@@ -35,12 +35,9 @@ public class RecipeReview extends BaseEntity {
     @Min(1)
     @Max(5)
     @Column(name = "RATING", nullable = false)
-    private int rating;
+    private Double rating;
 
     @Column(name = "COMMENT", length = 2000)
     private String comment;
-
-    @Column(name = "HELPFUL_COUNT", nullable = false)
-    private long helpfulCount = 0;
 
 }

@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package recipe;
+
+option java_package = "com.recipe.grpc.api.recipe.v1";
+option java_multiple_files = true;
+option java_outer_classname = "ReviewServiceProto";
+
+import "common/v1/page.proto";
+
+
+service ReviewService {
+  rpc  PostReview(PostReviewRequest) returns (PostReviewResponse) {}
+}
+
+
+message PostReviewRequest{
+  uint64 recipe_id = 1;
+
+  double rating = 2 ;
+
+  string comment = 3;
+}
+
+message PostReviewResponse{
+  uint64 review_id = 1;
+
+  uint64 recipe_id = 2;
+
+  double rating = 3;
+
+  string comment = 4;
+
+
+}

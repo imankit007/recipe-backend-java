@@ -2,7 +2,7 @@ package com.recipe.core.enums;
 
 public enum Unit {
     // weight
-    GRAM,
+    GRAMS,
     KILOGRAM,
     MILLIGRAM,
 
@@ -10,7 +10,7 @@ public enum Unit {
     MILLILITER,
     LITER,
     TEASPOON,
-    TABLESPOON,
+    TABLESPOONS,
     CUP,
 
     // count
@@ -25,5 +25,8 @@ public enum Unit {
     // packaged
     CAN,
     PACKET,
-    BUNCH
+    BUNCH,
+
+    ML,
+    MG
 }
