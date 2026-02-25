@@ -1,8 +1,8 @@
-package recipe.controller;
+package com.recipe.controller;
 
-import recipe.dto.common.PagedResponse;
-import recipe.dto.recipe.RecipeRequest;
-import recipe.dto.recipe.RecipeResponse;
+import com.recipe.dto.common.PagedResponse;
+import com.recipe.dto.recipe.RecipeRequest;
+import com.recipe.dto.recipe.RecipeResponse;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;

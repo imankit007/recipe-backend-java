@@ -1,4 +1,4 @@
-package recipe.dto.recipe;
+package com.recipe.dto.recipe;
 
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;

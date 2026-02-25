@@ -1,4 +1,4 @@
-package recipe.dto.recipe;
+package com.recipe.dto.recipe;
 
 
 //import com.recipe.core.enums.RecipeDifficultyLevel;

@@ -1,4 +1,4 @@
-package recipe.dto.recipe;
+package com.recipe.dto.recipe;
 
 public record RecipeStep(
         Integer stepNumber,

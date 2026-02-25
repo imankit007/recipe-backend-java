@@ -1,4 +1,4 @@
-package recipe.dto.common;
+package com.recipe.dto.common;
 
 import java.util.List;
 
