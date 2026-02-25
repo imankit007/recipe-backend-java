@@ -1,4 +1,4 @@
-package com.recipe.api.gateway.dto.reipe;
+package recipe.dto.recipe;
 
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;

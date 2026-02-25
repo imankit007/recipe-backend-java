@@ -1,0 +1,41 @@
+plugins {
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom(
+            "org.springframework.grpc:spring-grpc-dependencies:${property("springGrpcVersion")}"
+        )
+    }
+}
+
+dependencies {
+
+    // Project dependencies
+    implementation(project(":recipe-grpc-proto"))
+    implementation(project(":recipe-common"))
+
+    // Spring Boot starter dependencies
+    implementation("org.springframework.boot:spring-boot-starter")
+    // implementation("org.springframework.grpc:spring-grpc-spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+
+    implementation("io.grpc:grpc-netty-shaded")
+    implementation("net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE")
+
+    // JWT dependencies
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}

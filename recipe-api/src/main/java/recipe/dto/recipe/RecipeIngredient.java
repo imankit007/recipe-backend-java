@@ -1,4 +1,4 @@
-package com.recipe.api.gateway.dto.reipe;
+package recipe.dto.recipe;
 
 public record RecipeIngredient(
         Long id,
