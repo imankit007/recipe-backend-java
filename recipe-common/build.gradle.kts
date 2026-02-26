@@ -8,13 +8,13 @@ val springGrpcVersion: String by rootProject.extra
 
 dependencies {
 
-    implementation(project(":recipe-grpc-proto"))
+//    implementation(project(":recipe-grpc-proto"))
 
     implementation(platform("org.springframework.grpc:spring-grpc-dependencies:${springGrpcVersion}"))
 
-    // gRPC dependencies
-    implementation("io.grpc:grpc-protobuf")
-    implementation("io.grpc:grpc-stub")
+//    // gRPC dependencies
+//    implementation("io.grpc:grpc-protobuf")
+//    implementation("io.grpc:grpc-stub")
     implementation("jakarta.persistence:jakarta.persistence-api")
     implementation("org.hibernate.orm:hibernate-core")
     implementation("jakarta.annotation:jakarta.annotation-api")

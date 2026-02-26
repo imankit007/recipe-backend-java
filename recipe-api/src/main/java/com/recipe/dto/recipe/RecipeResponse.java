@@ -2,10 +2,12 @@ package com.recipe.dto.recipe;
 
 //import com.recipe.core.enums.RecipeDifficultyLevel;
 
+import com.recipe.core.enums.RecipeDifficultyLevel;
+
 public record RecipeResponse(
         Long id,
         String name,
-//        RecipeDifficultyLevel difficulty,
+        RecipeDifficultyLevel difficulty,
         Integer prepTimeMinutes,
         Integer cookTimeMinutes,
         Integer servings,
@@ -15,7 +17,7 @@ public record RecipeResponse(
 ) {
     public static final RecipeResponse EMPTY = new RecipeResponse(
             null, null, null, null,
-//            null,
+            null,
             null, null, null, null
     );
 

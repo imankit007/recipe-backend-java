@@ -1,0 +1,50 @@
+spring:
+#  autoconfigure:
+#    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+  application:
+    name: recipe-gateway
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: 4d7525e78827173ea7718b0667293cbbd76857da6aa2f4d4f267044d762de580
+
+  flyway:
+    enabled: false
+    locations: classpath:recipe/migration
+    baseline-on-migrate: true
+    baseline-version: 1
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/recipe_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+springdoc:
+  show-actuator: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+server:
+  port: 8081
+
+#logging:
+#  level:
+#    root: INFO
+#    org.springframework.security: TRACE
