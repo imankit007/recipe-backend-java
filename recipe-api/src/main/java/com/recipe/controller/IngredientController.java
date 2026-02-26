@@ -30,7 +30,8 @@ public class IngredientController {
     public ResponseEntity<IngredientResponse> createIngredient(
             @RequestBody IngredientReq ingredientRequest
     ) {
-        return new ResponseEntity<>(ingredientService.createIngredient(ingredientRequest), HttpStatus.CREATED);
+        IngredientResponse response = ingredientService.createIngredient(ingredientRequest);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 

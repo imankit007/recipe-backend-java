@@ -1,7 +1,5 @@
 package com.recipe.dto.recipe;
 
-//import com.recipe.core.enums.RecipeDifficultyLevel;
-
 import com.recipe.core.enums.RecipeDifficultyLevel;
 
 public record RecipeResponse(

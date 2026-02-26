@@ -11,6 +11,9 @@ repositories {
     mavenCentral()
 }
 
+val springDocVersion: String by project
+val guavaVersion: String by project
+
 dependencies {
 
     implementation(project(":recipe-common"))
@@ -18,7 +21,7 @@ dependencies {
     implementation(project(":recipe-migration"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}")
 
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -31,7 +34,7 @@ dependencies {
     implementation("org.flywaydb:flyway-database-postgresql")
 
     // Guava
-    implementation("com.google.guava:guava:33.5.0-jre")
+    implementation("com.google.guava:guava:${guavaVersion}")
 
 }
 

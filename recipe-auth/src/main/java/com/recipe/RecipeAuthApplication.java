@@ -12,6 +12,10 @@ import java.util.TimeZone;
 @EnableJpaRepositories(basePackages = {"com.recipe.data.auth.repository"})
 public class RecipeAuthApplication {
 
+    private RecipeAuthApplication(){
+
+    }
+
     static void main(String[] args) {
         // Ensure the JVM default timezone uses a Postgres-recognized ID (Asia/Kolkata)
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));

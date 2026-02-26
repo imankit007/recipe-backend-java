@@ -9,16 +9,16 @@ import com.recipe.core.utils.LogUtils;
 @GlobalServerInterceptor
 public class GrpcLoggingInterceptor implements ServerInterceptor {
     @Override
-    public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(ServerCall<ReqT, RespT> call, Metadata headers, ServerCallHandler<ReqT, RespT> next) {
+    public <I, O> ServerCall.Listener<I> interceptCall(ServerCall<I, O> call, Metadata headers, ServerCallHandler<I, O> next) {
 
 
         String methodName = call.getMethodDescriptor().getFullMethodName();
         long startTime = System.currentTimeMillis();
 
-        ServerCall.Listener<ReqT> listener = next.startCall(
-                new ForwardingServerCall.SimpleForwardingServerCall<ReqT, RespT>(call) {
+        ServerCall.Listener<I> listener = next.startCall(
+                new ForwardingServerCall.SimpleForwardingServerCall<I, O>(call) {
                     @Override
-                    public void sendMessage(RespT message) {
+                    public void sendMessage(O message) {
                         long time = System.currentTimeMillis() - startTime;
                         LogUtils.logResponse(methodName, message, time);
                         super.sendMessage(message);
@@ -35,7 +35,7 @@ public class GrpcLoggingInterceptor implements ServerInterceptor {
 
         return new ForwardingServerCallListener.SimpleForwardingServerCallListener<>(listener) {
             @Override
-            public void onMessage(ReqT message) {
+            public void onMessage(I message) {
                 LogUtils.logRequest(methodName, message);
                 super.onMessage(message);
             }

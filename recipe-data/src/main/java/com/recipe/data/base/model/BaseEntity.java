@@ -34,12 +34,6 @@ public abstract class BaseEntity {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
-//    @Column(name = "created_by", length = 50)
-//    private String createdBy;
-//
-//    @Column(name = "updated_by", length = 50)
-//    private String updatedBy;
-
     @PrePersist
     protected void onCreate() {
         Instant now = Instant.now();

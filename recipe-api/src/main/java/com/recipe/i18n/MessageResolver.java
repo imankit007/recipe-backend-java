@@ -43,7 +43,7 @@ public class MessageResolver {
         String base = "messages_" + locale.getLanguage() + ".properties";
         try (var is = new ClassPathResource(base).getInputStream()) {
             p.load(new java.io.InputStreamReader(is, StandardCharsets.UTF_8));
-        } catch (IOException e) {
+        } catch (IOException _) {
             // no file -> empty properties
         }
         return p;

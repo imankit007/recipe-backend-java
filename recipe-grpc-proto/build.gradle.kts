@@ -43,7 +43,10 @@ protobuf {
     }
 }
 
-tasks.register<Exec>("bufLint") {
+tasks.register<Exec>("bufLint", ) {
+    group = "build"
+    description = "Generates lint checks"
+
     commandLine("buf", "lint")
 }
 

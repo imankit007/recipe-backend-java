@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
 
-
     private final UserRepository userRepository;
 
     private final JwtUtil jwtUtil;
@@ -20,7 +19,7 @@ public class AuthService {
         var userOpt = userRepository.findByEmail(username);
 
         if (userOpt.isEmpty() || !userOpt.get().getPassword().equals(password)) {
-            throw new RuntimeException("Invalid username or password");
+            throw new IllegalArgumentException("Invalid username or password");
         }
 
         return jwtUtil.generateToken(username);

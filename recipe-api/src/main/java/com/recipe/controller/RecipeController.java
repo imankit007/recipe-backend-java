@@ -11,10 +11,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 
 
 @RestController
@@ -25,8 +25,7 @@ public class RecipeController {
 
     private final RecipeService recipeService;
 
-
-    @GetMapping("/")
+    @GetMapping
     public PagedResponse<RecipeResponse> getRecipes(
             @RequestParam(required = false, defaultValue = "1") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size
@@ -45,31 +44,34 @@ public class RecipeController {
 
     @GetMapping("/{id}")
     public RecipeResponse getRecipeById(
-            @RequestParam("id") Long id
+            @PathVariable("id") Long id
     ) {
         return RecipeResponse.EMPTY;
     }
 
     @PostMapping
-    public RecipeResponse createRecipe(
+    public ResponseEntity<RecipeResponse> createRecipe(
             @RequestBody RecipeRequest recipeRequest
     ) {
-
-        return RecipeResponse.EMPTY;
+        return new ResponseEntity<>(recipeService.createRecipe(recipeRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public RecipeResponse updateRecipe(
-            @RequestParam("id") Long id,
+            @PathVariable("id") Long id,
             @RequestBody RecipeRequest recipeRequest
     ) {
-        return RecipeResponse.EMPTY;
+        return recipeService.updateRecipe(id, recipeRequest);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRecipe(@Valid
-                                             @Parameter(description = "Id of recipe to be deleted", name = "id") @RequestParam("id") @NotNull Long id
+    public ResponseEntity<Void> deleteRecipe(
+            @Valid
+            @Parameter(description = "Id of recipe to be deleted", name = "id")
+            @PathVariable("id")
+            @NotNull Long id
     ) {
+        recipeService.deleteRecipe(id);
         return ResponseEntity.noContent().build();
     }
 

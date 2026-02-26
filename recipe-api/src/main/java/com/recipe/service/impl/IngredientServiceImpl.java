@@ -18,8 +18,6 @@ public class IngredientServiceImpl implements IngredientService {
 
     private final IngredientConverter ingredientConverter;
 
-    static public String usedInRecipeMessageTemplate ;
-
     public IngredientResponse createIngredient(IngredientReq ingredientReq) {
         Ingredient ingredient = new Ingredient();
         ingredient.setName(ingredientReq.name());

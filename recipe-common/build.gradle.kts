@@ -4,8 +4,7 @@ plugins {
 }
 
 val springGrpcVersion: String by rootProject.extra
-
-
+val jsonwebtokenVersion: String by project
 dependencies {
 
 //    implementation(project(":recipe-grpc-proto"))
@@ -23,9 +22,9 @@ dependencies {
     implementation("org.springframework.data:spring-data-commons")
 
     // JWT dependencies
-    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-api:${jsonwebtokenVersion}")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:${jsonwebtokenVersion}")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}")
 }
 
 tasks.test {

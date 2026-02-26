@@ -11,6 +11,10 @@ dependencyManagement {
     }
 }
 
+val guavaVersion: String by project
+val jakartaVersion: String by project
+val jsonwebtokenVersion: String by project
+
 dependencies {
 
     // Project Dependencies
@@ -34,18 +38,18 @@ dependencies {
     implementation("org.postgresql:postgresql")
 
     // Guava
-    implementation("com.google.guava:guava:33.5.0-jre")
+    implementation("com.google.guava:guava:${guavaVersion}")
 
     // Validation API
-    implementation("jakarta.validation:jakarta.validation-api:3.1.0")
+    implementation("jakarta.validation:jakarta.validation-api:${jakartaVersion}")
 
     // Migrations
     implementation("org.flywaydb:flyway-database-postgresql")
 
     // JWT dependencies
-    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-api:${jsonwebtokenVersion}")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:${jsonwebtokenVersion}")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}")
 }
 
 tasks.test {

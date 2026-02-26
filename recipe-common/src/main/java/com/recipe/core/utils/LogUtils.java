@@ -5,6 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class LogUtils {
 
+    private LogUtils(){
+        // prevent instantiation
+    }
 
     public static void logRequest(String method, Object request) {
         log.info("gRPC Request  | method={} | payload={}",

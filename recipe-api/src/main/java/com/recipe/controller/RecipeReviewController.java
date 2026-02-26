@@ -1,4 +1,4 @@
-package com.recipe.api.gateway.recipe.controller;
+package com.recipe.controller;
 
 import com.recipe.dto.review.ReviewRequest;
 import com.recipe.dto.review.ReviewResponse;
