@@ -26,3 +26,9 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+security:
+  jwt:
+    key:
+      private: classpath:keys/private.pem
+      public: classpath:keys/public.pem
