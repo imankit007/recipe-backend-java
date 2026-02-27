@@ -2,14 +2,9 @@ spring:
 #  autoconfigure:
 #    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
   application:
-    name: recipe-gateway
+    name: recipe-api-service
   jackson:
     property-naming-strategy: SNAKE_CASE
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          secret-key: 4d7525e78827173ea7718b0667293cbbd76857da6aa2f4d4f267044d762de580
 
   flyway:
     enabled: false
@@ -33,6 +28,10 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    path: /v3/api-docs
   show-actuator: false
 
 management:

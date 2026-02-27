@@ -17,7 +17,6 @@ import java.util.Base64;
 @UtilityClass
 public class PemUtils {
 
-
     public static PrivateKey readPrivateKey(Resource resource) throws InvalidKeySpecException, IOException, NoSuchAlgorithmException {
         String key = new String(resource.getInputStream().readAllBytes());
         key = key

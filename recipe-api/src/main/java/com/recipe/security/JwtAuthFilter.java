@@ -13,12 +13,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 
-@Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
 
-    private final JwtUtil jwtUtil;
+//    private final JwtToken jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @org.jspecify.annotations.NonNull HttpServletResponse response, @org.jspecify.annotations.NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -26,11 +25,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-            if (!jwtUtil.validateToken(token)) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            }
-
+//            if (!jwtUtil.validateToken(token)) {
+//                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                return;
+//            }
 
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

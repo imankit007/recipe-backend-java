@@ -9,3 +9,4 @@ include(
     "recipe-auth",
     "recipe-api"
 )
+include("recipe-gateway")
