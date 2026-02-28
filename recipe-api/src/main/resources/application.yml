@@ -43,6 +43,17 @@ management:
 server:
   port: 8081
 
+
+grpc:
+  client:
+    auth-service:
+      address: static://localhost:50054
+      enableKeepAlive: true
+      keepAliveTime: 30s
+      keepAliveTimeout: 10s
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
 #logging:
 #  level:
 #    root: INFO
