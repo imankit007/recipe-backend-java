@@ -1,6 +1,6 @@
 spring:
-#  autoconfigure:
-#    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
   application:
     name: recipe-api-service
   jackson:
@@ -20,8 +20,9 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
     show-sql: true
+    open-in-view: false
     properties:
       hibernate:
         format_sql: true

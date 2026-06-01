@@ -3,6 +3,8 @@ server:
 spring:
   main:
     web-application-type: reactive
+  application:
+    name: recipe-gateway
   cloud:
     gateway:
       server:
@@ -14,27 +16,45 @@ spring:
                 allowedMethods:
                   - "GET"
                   - "POST"
-#                  - PUT
-#                  - DELETE
-#                  - OPTIONS
+                  - "PUT"
+                  - "DELETE"
+                  - "OPTIONS"
                 allowedHeaders: "*"
+                allowCredentials: true
           default-filters:
             - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
-          routes:
-            - id: recipe-service
-              uri: 'http://localhost:8081'
-              predicates:
-                - Path=/recipe-service/**
-              filters:
-                - StripPrefix=1
+
+recipe:
+  service:
+    url: http://localhost:8081
+
+user:
+  service:
+    url: http://localhost:8083
+
 springdoc:
   api-docs:
     enabled: true
+    path: /v3/api-docs
   swagger-ui:
+    enabled: true
     path: /swagger-ui.html
+    use-root-path: true
+    disable-swagger-default-url: true
+    url: /v3/api-docs
+    urls-primary-name: Gateway
     urls:
       - name: Recipe Service
         url: /recipe-service/v3/api-docs
+      - name: User Service
+        url: /user-service/v3/api-docs
+  show-actuator: false
+  use-management-port: false
+  show-login-endpoint: false
+  gateway:
+    enabled: true
+  scanner:
+    enabled: false
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG

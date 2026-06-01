@@ -17,8 +17,10 @@ dependencies {
     implementation("jakarta.persistence:jakarta.persistence-api")
     implementation("org.hibernate.orm:hibernate-core")
     implementation("jakarta.annotation:jakarta.annotation-api")
+    implementation("jakarta.servlet:jakarta.servlet-api")
     implementation("org.springframework:spring-core")
     implementation("org.springframework:spring-beans")
+    implementation("org.springframework:spring-web")
     implementation("org.springframework.data:spring-data-commons")
 
     // JWT dependencies

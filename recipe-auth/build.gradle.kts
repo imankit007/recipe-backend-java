@@ -15,6 +15,8 @@ val guavaVersion: String by project
 val jakartaVersion: String by project
 val jsonwebtokenVersion: String by project
 
+val springDocVersion: String by project
+
 dependencies {
 
     // Project Dependencies
@@ -27,6 +29,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.grpc:spring-grpc-spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}")
 
     // gRPC dependencies
     implementation("io.grpc:grpc-protobuf")

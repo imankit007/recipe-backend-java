@@ -6,7 +6,7 @@ services:
     container_name: recipe-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: recipe
+      POSTGRES_DB: recipe_db
       POSTGRES_USER: postgres
       TZ: Asia/Kolkata
       PGTZ: Asia/Kolkata
