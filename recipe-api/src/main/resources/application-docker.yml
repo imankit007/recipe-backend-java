@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/recipe_db
+    username: postgres
+    password: postgres
+
+server:
+  port: 8080
+
+grpc:
+  client:
+    auth-service:
+      address: static://recipe-auth:50054
+      enableKeepAlive: true
+      keepAliveTime: 30s
+      keepAliveTimeout: 10s
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+

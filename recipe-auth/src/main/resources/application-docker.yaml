@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://recipe-postgres:5432/recipe_user_db
+    username: postgres
+    password: postgres
+

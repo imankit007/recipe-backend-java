@@ -1,0 +1,11 @@
+server:
+  port: 8080
+
+recipe:
+  service:
+    url: http://recipe-api-service:8080
+
+user:
+  service:
+    url: http://recipe-auth:8080
+
