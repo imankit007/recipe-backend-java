@@ -1,4 +1,4 @@
-package com.recipe.auth.util;
+package com.recipe.util;
 
 
 import com.recipe.data.auth.model.User;

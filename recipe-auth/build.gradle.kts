@@ -28,6 +28,8 @@ dependencies {
     // Spring Boot starter dependencies
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    // Expose actuator endpoints used by docker-compose healthchecks
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.grpc:spring-grpc-spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
 

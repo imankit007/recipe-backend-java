@@ -1,7 +1,7 @@
-package com.recipe.auth.service;
+package com.recipe.service;
 
 
-import com.recipe.auth.util.JwtTokenProvider;
+import com.recipe.util.JwtTokenProvider;
 import com.recipe.data.auth.repository.UserRepository;
 import com.recipe.data.auth.model.User;
 import lombok.RequiredArgsConstructor;

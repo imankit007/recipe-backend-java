@@ -32,6 +32,11 @@ public class OpenApiConfig {
     public OpenAPI apiInfo() {
 
         return new OpenAPI()
+                .servers(
+                        java.util.List.of(
+                                new io.swagger.v3.oas.models.servers.Server().url("/user-service").description("User Service")
+                        )
+                )
                 .components(new Components())
                 .info(new Info()
                         .title("Recipe API Gateway")

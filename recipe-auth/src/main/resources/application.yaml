@@ -10,7 +10,7 @@ spring:
       reflection:
         enabled: true
   flyway:
-    enabled: true
+    enabled: false
     locations: classpath:auth/migration
     baseline-on-migrate: true
     baseline-version: 1
@@ -35,3 +35,11 @@ security:
     key:
       private: classpath:keys/private.pem
       public: classpath:keys/public.pem
+
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    path: /v3/api-docs
+  show-actuator: false
