@@ -57,6 +57,9 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:${jsonwebtokenVersion}")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:${jsonwebtokenVersion}")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}")
+
+    // AWS S3 SDK (for MinIO-compatible storage & presigned URLs)
+    implementation("software.amazon.awssdk:s3:2.47.4")
 }
 
 tasks.test {

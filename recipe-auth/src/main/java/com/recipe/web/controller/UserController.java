@@ -2,15 +2,15 @@ package com.recipe.web.controller;
 
 
 import com.recipe.core.security.AuthContextHolder;
-import com.recipe.data.auth.model.User;
 import com.recipe.data.auth.repository.UserRepository;
+import com.recipe.web.model.user.UpdateAvatarRequest;
+import com.recipe.web.model.user.UpdateAvatarResponse;
+import com.recipe.web.model.user.UserResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller for user-related operations.
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final com.recipe.service.S3Service s3Service;
 
     /**
      * Returns the current authenticated user's information.
@@ -32,7 +33,7 @@ public class UserController {
      * @return ResponseEntity containing the authenticated user's information
      */
     @GetMapping("/me")
-    public ResponseEntity<User> getMe() {
+    public ResponseEntity<UserResponse> getMe() {
         Long userId = AuthContextHolder.getUserId();
 
 
@@ -47,8 +48,63 @@ public class UserController {
         }
 
         var user = userRepository.findById(userId);
-        return user.map(ResponseEntity::ok)
-                  .orElseGet(() -> ResponseEntity.notFound().build());
+        String finalThumbnailUrl = "";
+        String profilePictureUrl = "";
+
+        if (user.isPresent()) {
+            var u = user.get();
+            if (u.getAvatarUrl() != null && !u.getAvatarUrl().isEmpty()) {
+                try {
+                    java.net.URL presigned = s3Service.presignGetUrl(u.getAvatarUrl(), java.time.Duration.ofMinutes(15));
+                    profilePictureUrl = presigned.toString();
+                } catch (Exception e) {
+                    log.warn("Failed to generate presigned GET URL for avatar", e);
+                }
+            }
+        }
+
+        String finalProfilePictureUrl = profilePictureUrl;
+        return user.map(u -> new UserResponse(u.getId(), u.getEmail(), u.getDisplayName(), finalProfilePictureUrl, finalThumbnailUrl))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping(value = "/avatar", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<UpdateAvatarResponse> updateAvatar(@RequestBody UpdateAvatarRequest req) {
+        Long userId = AuthContextHolder.getUserId();
+        if (userId == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        var userOpt = userRepository.findById(userId);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String sourceKey = req.objectKey();
+        String expectedEtag = req.etag();
+        var user = userOpt.get();
+
+        try {
+            String destKey;
+            // If uploaded to temp/ prefix, promote; else assume it's already a final key
+            if (sourceKey != null && sourceKey.startsWith("temp/")) {
+                destKey = s3Service.promoteTempToAvatar(sourceKey, userId, 5L * 1024 * 1024, expectedEtag); // 5MB limit
+            } else {
+                destKey = sourceKey;
+            }
+
+            user.setAvatarUrl(destKey);
+            userRepository.save(user);
+
+            java.net.URL presigned = s3Service.presignGetUrl(destKey, java.time.Duration.ofMinutes(15));
+            return ResponseEntity.ok(new com.recipe.web.model.user.UpdateAvatarResponse(presigned.toString(), destKey));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new com.recipe.web.model.user.UpdateAvatarResponse(null, sourceKey));
+        } catch (Exception e) {
+            log.error("Failed to update avatar", e);
+            return ResponseEntity.status(500).body(new com.recipe.web.model.user.UpdateAvatarResponse(null, sourceKey));
+        }
     }
 
 }
