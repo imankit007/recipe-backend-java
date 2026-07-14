@@ -6,7 +6,6 @@ import com.recipe.web.model.LoginRequest;
 import com.recipe.web.model.LoginResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +23,7 @@ public class AuthenticationController {
     private final AuthService authService;
 
     @PostMapping("login")
-    private ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         String token = authService.login(request.username(), request.password());
 
         LoginResponse response = new LoginResponse(token,

@@ -23,13 +23,8 @@ public class S3Service {
     private String bucket;
 
     public URL presignPutUrl(String key, String contentType, Duration expires) {
-        PutObjectRequest por = PutObjectRequest.builder()
-                .bucket(bucket)
-                .key(key)
-                .contentType(contentType)
-                .build();
         PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
-                .putObjectRequest(por)
+                .putObjectRequest(b -> b.bucket(bucket).key(key).contentType(contentType))
                 .signatureDuration(expires)
                 .build();
         PresignedPutObjectRequest presigned = s3Presigner.presignPutObject(presignRequest);
@@ -37,9 +32,8 @@ public class S3Service {
     }
 
     public URL presignGetUrl(String key, Duration expires) {
-        GetObjectRequest gor = GetObjectRequest.builder().bucket(bucket).key(key).build();
         GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
-                .getObjectRequest(gor)
+                .getObjectRequest(b -> b.bucket(bucket).key(key))
                 .signatureDuration(expires)
                 .build();
         PresignedGetObjectRequest presigned = s3Presigner.presignGetObject(presignRequest);
@@ -51,7 +45,7 @@ public class S3Service {
             HeadObjectRequest req = HeadObjectRequest.builder().bucket(bucket).key(key).build();
             s3Client.headObject(req);
             return true;
-        } catch (S3Exception e) {
+        } catch (S3Exception _) {
             return false;
         }
     }
@@ -61,7 +55,7 @@ public class S3Service {
             HeadObjectRequest req = HeadObjectRequest.builder().bucket(bucket).key(key).build();
             HeadObjectResponse resp = s3Client.headObject(req);
             return new ObjectMeta(resp.contentLength(), resp.contentType(), resp.eTag());
-        } catch (S3Exception e) {
+        } catch (S3Exception _) {
             return null;
         }
     }
@@ -93,7 +87,7 @@ public class S3Service {
         // ETag verification if provided
         if (expectedEtag != null && !expectedEtag.isBlank()) {
             String actual = meta.eTag();
-            if (actual == null || !actual.replaceAll("\"", "").equals(expectedEtag.replaceAll("\"", ""))) {
+            if (actual == null || !actual.replace("\"", "").equals(expectedEtag.replace("\"", ""))) {
                 throw new IllegalArgumentException("etag mismatch");
             }
         }
@@ -107,6 +101,16 @@ public class S3Service {
             throw new IllegalArgumentException("file too large");
         }
 
+        String ext = getExtension(sourceKey, meta);
+
+        String destKey = String.format("avatars/%d/%s%s", userId, UUID.randomUUID(), ext);
+        copyObject(sourceKey, destKey);
+        deleteObject(sourceKey);
+        return destKey;
+    }
+
+    private static String getExtension(String sourceKey, ObjectMeta meta) {
+        String ct = meta.contentType();
         String ext = "";
         if (sourceKey.contains(".")) {
             ext = sourceKey.substring(sourceKey.lastIndexOf('.'));
@@ -115,11 +119,7 @@ public class S3Service {
         } else if (ct.equals("image/png")) {
             ext = ".png";
         }
-
-        String destKey = String.format("avatars/%d/%s%s", userId, UUID.randomUUID(), ext);
-        copyObject(sourceKey, destKey);
-        deleteObject(sourceKey);
-        return destKey;
+        return ext;
     }
 
     public static record ObjectMeta(long contentLength, String contentType, String eTag) {}

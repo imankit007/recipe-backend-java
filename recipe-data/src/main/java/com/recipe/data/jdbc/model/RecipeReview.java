@@ -1,6 +1,5 @@
 package com.recipe.data.jdbc.model;
 
-import com.recipe.data.auth.model.User;
 import com.recipe.data.base.model.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;

@@ -99,7 +99,7 @@ public class UserController {
 
             java.net.URL presigned = s3Service.presignGetUrl(destKey, java.time.Duration.ofMinutes(15));
             return ResponseEntity.ok(new com.recipe.web.model.user.UpdateAvatarResponse(presigned.toString(), destKey));
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException _) {
             return ResponseEntity.badRequest().body(new com.recipe.web.model.user.UpdateAvatarResponse(null, sourceKey));
         } catch (Exception e) {
             log.error("Failed to update avatar", e);

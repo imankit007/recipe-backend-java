@@ -36,7 +36,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         // Store in ThreadLocal context
                         AuthContextHolder.setContext(authContext);
 
-                    } catch (Exception e) {
+                    } catch (Exception _) {
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         response.getWriter().write("Invalid token");
                         return;
